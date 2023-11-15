@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34309.116
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TCP_Socket_client_server_appliaction_WFA", "TCP_Socket_client_server_appliaction_WFA\TCP_Socket_client_server_appliaction_WFA.csproj", "{09B5B07F-ADB6-4719-991B-72A2FF3D0ADC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{09B5B07F-ADB6-4719-991B-72A2FF3D0ADC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09B5B07F-ADB6-4719-991B-72A2FF3D0ADC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09B5B07F-ADB6-4719-991B-72A2FF3D0ADC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09B5B07F-ADB6-4719-991B-72A2FF3D0ADC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {939EE548-BD04-4895-AB6F-9A080751C86B}
+	EndGlobalSection
+EndGlobal
