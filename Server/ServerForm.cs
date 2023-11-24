@@ -41,5 +41,25 @@ namespace Server
         {
 
         }
+
+        private void labelConnectedClients_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textboxConnectedClients_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void buttonSendCommand_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBoxClientCommand_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
