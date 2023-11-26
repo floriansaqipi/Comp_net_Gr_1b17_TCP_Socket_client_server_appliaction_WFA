@@ -31,15 +31,15 @@
             tableLayoutPanel1 = new TableLayoutPanel();
             tableLayoutPanel2 = new TableLayoutPanel();
             labelConnectedClients = new Label();
-            textboxConnectedClients = new TextBox();
-            buttonSendCommand = new Button();
+            connectedClientsTextBox = new TextBox();
+            sendCommandButton = new Button();
             textBoxClientCommand = new TextBox();
             tableLayoutPanel3 = new TableLayoutPanel();
             startServerButton = new Button();
             stopServerButton = new Button();
             portLabel = new Label();
             portTextBox = new TextBox();
-            textBox = new TextBox();
+            statusTextBox = new TextBox();
             tableLayoutPanel1.SuspendLayout();
             tableLayoutPanel2.SuspendLayout();
             tableLayoutPanel3.SuspendLayout();
@@ -52,7 +52,7 @@
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 37.0603027F));
             tableLayoutPanel1.Controls.Add(tableLayoutPanel2, 1, 0);
             tableLayoutPanel1.Controls.Add(tableLayoutPanel3, 1, 1);
-            tableLayoutPanel1.Controls.Add(textBox, 0, 0);
+            tableLayoutPanel1.Controls.Add(statusTextBox, 0, 0);
             tableLayoutPanel1.Location = new Point(2, 1);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 2;
@@ -67,8 +67,8 @@
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50.17301F));
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 49.82699F));
             tableLayoutPanel2.Controls.Add(labelConnectedClients, 0, 0);
-            tableLayoutPanel2.Controls.Add(textboxConnectedClients, 1, 0);
-            tableLayoutPanel2.Controls.Add(buttonSendCommand, 1, 3);
+            tableLayoutPanel2.Controls.Add(connectedClientsTextBox, 1, 0);
+            tableLayoutPanel2.Controls.Add(sendCommandButton, 1, 3);
             tableLayoutPanel2.Controls.Add(textBoxClientCommand, 0, 2);
             tableLayoutPanel2.Dock = DockStyle.Fill;
             tableLayoutPanel2.Location = new Point(504, 3);
@@ -92,26 +92,26 @@
             labelConnectedClients.Text = "Connected Clients:";
             labelConnectedClients.TextAlign = ContentAlignment.MiddleRight;
             // 
-            // textboxConnectedClients
+            // connectedClientsTextBox
             // 
-            textboxConnectedClients.Dock = DockStyle.Fill;
-            textboxConnectedClients.Location = new Point(148, 3);
-            textboxConnectedClients.Name = "textboxConnectedClients";
-            textboxConnectedClients.Size = new Size(138, 23);
-            textboxConnectedClients.TabIndex = 1;
-            textboxConnectedClients.Text = "0";
-            textboxConnectedClients.TextAlign = HorizontalAlignment.Center;
+            connectedClientsTextBox.Dock = DockStyle.Fill;
+            connectedClientsTextBox.Location = new Point(148, 3);
+            connectedClientsTextBox.Name = "connectedClientsTextBox";
+            connectedClientsTextBox.Size = new Size(138, 23);
+            connectedClientsTextBox.TabIndex = 1;
+            connectedClientsTextBox.Text = "0";
+            connectedClientsTextBox.TextAlign = HorizontalAlignment.Center;
             // 
-            // buttonSendCommand
+            // sendCommandButton
             // 
-            buttonSendCommand.Dock = DockStyle.Fill;
-            buttonSendCommand.Location = new Point(148, 176);
-            buttonSendCommand.Name = "buttonSendCommand";
-            buttonSendCommand.Size = new Size(138, 28);
-            buttonSendCommand.TabIndex = 2;
-            buttonSendCommand.Text = "Send Command";
-            buttonSendCommand.UseVisualStyleBackColor = true;
-            buttonSendCommand.Click += sendCommandButtonHandler;
+            sendCommandButton.Dock = DockStyle.Fill;
+            sendCommandButton.Location = new Point(148, 176);
+            sendCommandButton.Name = "sendCommandButton";
+            sendCommandButton.Size = new Size(138, 28);
+            sendCommandButton.TabIndex = 2;
+            sendCommandButton.Text = "Send Command";
+            sendCommandButton.UseVisualStyleBackColor = true;
+            sendCommandButton.Click += sendCommandButtonHandler;
             // 
             // textBoxClientCommand
             // 
@@ -185,17 +185,17 @@
             portTextBox.Text = "5000";
             portTextBox.TextAlign = HorizontalAlignment.Center;
             // 
-            // textBox
+            // statusTextBox
             // 
-            textBox.Dock = DockStyle.Fill;
-            textBox.Location = new Point(3, 3);
-            textBox.Multiline = true;
-            textBox.Name = "textBox";
-            textBox.ReadOnly = true;
-            tableLayoutPanel1.SetRowSpan(textBox, 2);
-            textBox.ScrollBars = ScrollBars.Vertical;
-            textBox.Size = new Size(495, 420);
-            textBox.TabIndex = 2;
+            statusTextBox.Dock = DockStyle.Fill;
+            statusTextBox.Location = new Point(3, 3);
+            statusTextBox.Multiline = true;
+            statusTextBox.Name = "statusTextBox";
+            statusTextBox.ReadOnly = true;
+            tableLayoutPanel1.SetRowSpan(statusTextBox, 2);
+            statusTextBox.ScrollBars = ScrollBars.Vertical;
+            statusTextBox.Size = new Size(495, 420);
+            statusTextBox.TabIndex = 2;
             // 
             // ServerForm
             // 
@@ -221,12 +221,12 @@
         private TableLayoutPanel tableLayoutPanel3;
         private Button startServerButton;
         private Button stopServerButton;
-        private TextBox textBox;
+        private TextBox statusTextBox;
         private Label portLabel;
         private TextBox portTextBox;
         private Label labelConnectedClients;
-        private TextBox textboxConnectedClients;
-        private Button buttonSendCommand;
+        private TextBox connectedClientsTextBox;
+        private Button sendCommandButton;
         private TextBox textBoxClientCommand;
     }
 }
