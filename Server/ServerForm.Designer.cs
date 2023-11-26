@@ -1,6 +1,6 @@
 ﻿namespace Server
 {
-    partial class Form1
+    partial class ServerForm
     {
         /// <summary>
         ///  Required designer variable.
@@ -80,7 +80,6 @@
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Absolute, 33F));
             tableLayoutPanel2.Size = new Size(289, 207);
             tableLayoutPanel2.TabIndex = 0;
-            tableLayoutPanel2.Paint += tableLayoutPanel2_Paint;
             // 
             // labelConnectedClients
             // 
@@ -92,7 +91,6 @@
             labelConnectedClients.TabIndex = 0;
             labelConnectedClients.Text = "Connected Clients:";
             labelConnectedClients.TextAlign = ContentAlignment.MiddleRight;
-            labelConnectedClients.Click += labelConnectedClients_Click;
             // 
             // textboxConnectedClients
             // 
@@ -103,7 +101,6 @@
             textboxConnectedClients.TabIndex = 1;
             textboxConnectedClients.Text = "0";
             textboxConnectedClients.TextAlign = HorizontalAlignment.Center;
-            textboxConnectedClients.TextChanged += textboxConnectedClients_TextChanged;
             // 
             // buttonSendCommand
             // 
@@ -114,7 +111,7 @@
             buttonSendCommand.TabIndex = 2;
             buttonSendCommand.Text = "Send Command";
             buttonSendCommand.UseVisualStyleBackColor = true;
-            buttonSendCommand.Click += buttonSendCommand_Click;
+            buttonSendCommand.Click += sendCommandButtonHandler;
             // 
             // textBoxClientCommand
             // 
@@ -125,7 +122,6 @@
             textBoxClientCommand.Name = "textBoxClientCommand";
             textBoxClientCommand.Size = new Size(283, 64);
             textBoxClientCommand.TabIndex = 3;
-            textBoxClientCommand.TextChanged += textBoxClientCommand_TextChanged;
             // 
             // tableLayoutPanel3
             // 
@@ -145,7 +141,6 @@
             tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Absolute, 43F));
             tableLayoutPanel3.Size = new Size(289, 207);
             tableLayoutPanel3.TabIndex = 1;
-            tableLayoutPanel3.Paint += tableLayoutPanel3_Paint;
             // 
             // startServerButton
             // 
@@ -156,7 +151,7 @@
             startServerButton.TabIndex = 0;
             startServerButton.Text = "Start Server";
             startServerButton.UseVisualStyleBackColor = true;
-            startServerButton.Click += startServerButton_Click;
+            startServerButton.Click += startServerButtonHandler;
             // 
             // stopServerButton
             // 
@@ -167,7 +162,7 @@
             stopServerButton.TabIndex = 1;
             stopServerButton.Text = "Stop Server";
             stopServerButton.UseVisualStyleBackColor = true;
-            stopServerButton.Click += stopServerButton_Click;
+            stopServerButton.Click += stopServerButtonHandler;
             // 
             // portLabel
             // 
@@ -179,7 +174,6 @@
             portLabel.TabIndex = 2;
             portLabel.Text = "Listen on port:";
             portLabel.TextAlign = ContentAlignment.MiddleRight;
-            portLabel.Click += portLabel_Click;
             // 
             // portTextBox
             // 
@@ -190,7 +184,6 @@
             portTextBox.TabIndex = 3;
             portTextBox.Text = "5000";
             portTextBox.TextAlign = HorizontalAlignment.Center;
-            portTextBox.TextChanged += portTextBox_TextChanged;
             // 
             // textBox
             // 
@@ -203,15 +196,14 @@
             textBox.ScrollBars = ScrollBars.Vertical;
             textBox.Size = new Size(495, 420);
             textBox.TabIndex = 2;
-            textBox.TextChanged += textBox_TextChanged;
             // 
-            // Form1
+            // ServerForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
             Controls.Add(tableLayoutPanel1);
-            Name = "Form1";
+            Name = "ServerForm";
             Text = "WinForm Server";
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.PerformLayout();

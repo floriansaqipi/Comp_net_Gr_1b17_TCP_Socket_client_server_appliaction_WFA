@@ -1,65 +1,26 @@
 namespace Server
 {
-    public partial class Form1 : Form
+    public partial class ServerForm : Form
     {
-        public Form1()
+        public ServerForm()
         {
             InitializeComponent();
         }
 
-        private void portTextBox_TextChanged(object sender, EventArgs e)
+        #region Event Handlers
+        private void startServerButtonHandler(object sender, EventArgs e)
+        {
+
+        }
+        private void stopServerButtonHandler(object sender, EventArgs e)
         {
 
         }
 
-        private void textBox_TextChanged(object sender, EventArgs e)
+        private void sendCommandButtonHandler(object sender, EventArgs e)
         {
 
         }
-
-        private void tableLayoutPanel2_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void tableLayoutPanel3_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void portLabel_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void stopServerButton_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void startServerButton_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void labelConnectedClients_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textboxConnectedClients_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void buttonSendCommand_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBoxClientCommand_TextChanged(object sender, EventArgs e)
-        {
-
-        }
+        #endregion Event Handlers
     }
 }
