@@ -30,16 +30,16 @@
         {
             tableLayoutPanel1 = new TableLayoutPanel();
             tableLayoutPanel2 = new TableLayoutPanel();
+            labelConnectedClients = new Label();
+            textboxConnectedClients = new TextBox();
+            buttonSendCommand = new Button();
+            textBoxClientCommand = new TextBox();
             tableLayoutPanel3 = new TableLayoutPanel();
             startServerButton = new Button();
             stopServerButton = new Button();
             portLabel = new Label();
             portTextBox = new TextBox();
             textBox = new TextBox();
-            labelConnectedClients = new Label();
-            textboxConnectedClients = new TextBox();
-            buttonSendCommand = new Button();
-            textBoxClientCommand = new TextBox();
             tableLayoutPanel1.SuspendLayout();
             tableLayoutPanel2.SuspendLayout();
             tableLayoutPanel3.SuspendLayout();
@@ -81,6 +81,51 @@
             tableLayoutPanel2.Size = new Size(289, 207);
             tableLayoutPanel2.TabIndex = 0;
             tableLayoutPanel2.Paint += tableLayoutPanel2_Paint;
+            // 
+            // labelConnectedClients
+            // 
+            labelConnectedClients.AutoSize = true;
+            labelConnectedClients.Dock = DockStyle.Fill;
+            labelConnectedClients.Location = new Point(3, 0);
+            labelConnectedClients.Name = "labelConnectedClients";
+            labelConnectedClients.Size = new Size(139, 27);
+            labelConnectedClients.TabIndex = 0;
+            labelConnectedClients.Text = "Connected Clients:";
+            labelConnectedClients.TextAlign = ContentAlignment.MiddleRight;
+            labelConnectedClients.Click += labelConnectedClients_Click;
+            // 
+            // textboxConnectedClients
+            // 
+            textboxConnectedClients.Dock = DockStyle.Fill;
+            textboxConnectedClients.Location = new Point(148, 3);
+            textboxConnectedClients.Name = "textboxConnectedClients";
+            textboxConnectedClients.Size = new Size(138, 23);
+            textboxConnectedClients.TabIndex = 1;
+            textboxConnectedClients.Text = "0";
+            textboxConnectedClients.TextAlign = HorizontalAlignment.Center;
+            textboxConnectedClients.TextChanged += textboxConnectedClients_TextChanged;
+            // 
+            // buttonSendCommand
+            // 
+            buttonSendCommand.Dock = DockStyle.Fill;
+            buttonSendCommand.Location = new Point(148, 176);
+            buttonSendCommand.Name = "buttonSendCommand";
+            buttonSendCommand.Size = new Size(138, 28);
+            buttonSendCommand.TabIndex = 2;
+            buttonSendCommand.Text = "Send Command";
+            buttonSendCommand.UseVisualStyleBackColor = true;
+            buttonSendCommand.Click += buttonSendCommand_Click;
+            // 
+            // textBoxClientCommand
+            // 
+            tableLayoutPanel2.SetColumnSpan(textBoxClientCommand, 2);
+            textBoxClientCommand.Dock = DockStyle.Fill;
+            textBoxClientCommand.Location = new Point(3, 106);
+            textBoxClientCommand.Multiline = true;
+            textBoxClientCommand.Name = "textBoxClientCommand";
+            textBoxClientCommand.Size = new Size(283, 64);
+            textBoxClientCommand.TabIndex = 3;
+            textBoxClientCommand.TextChanged += textBoxClientCommand_TextChanged;
             // 
             // tableLayoutPanel3
             // 
@@ -159,51 +204,6 @@
             textBox.Size = new Size(495, 420);
             textBox.TabIndex = 2;
             textBox.TextChanged += textBox_TextChanged;
-            // 
-            // labelConnectedClients
-            // 
-            labelConnectedClients.AutoSize = true;
-            labelConnectedClients.Dock = DockStyle.Fill;
-            labelConnectedClients.Location = new Point(3, 0);
-            labelConnectedClients.Name = "labelConnectedClients";
-            labelConnectedClients.Size = new Size(139, 27);
-            labelConnectedClients.TabIndex = 0;
-            labelConnectedClients.Text = "Connected Clients:";
-            labelConnectedClients.TextAlign = ContentAlignment.MiddleRight;
-            labelConnectedClients.Click += labelConnectedClients_Click;
-            // 
-            // textboxConnectedClients
-            // 
-            textboxConnectedClients.Dock = DockStyle.Fill;
-            textboxConnectedClients.Location = new Point(148, 3);
-            textboxConnectedClients.Name = "textboxConnectedClients";
-            textboxConnectedClients.Size = new Size(138, 23);
-            textboxConnectedClients.TabIndex = 1;
-            textboxConnectedClients.Text = "0";
-            textboxConnectedClients.TextAlign = HorizontalAlignment.Center;
-            textboxConnectedClients.TextChanged += textboxConnectedClients_TextChanged;
-            // 
-            // buttonSendCommand
-            // 
-            buttonSendCommand.Dock = DockStyle.Fill;
-            buttonSendCommand.Location = new Point(148, 176);
-            buttonSendCommand.Name = "buttonSendCommand";
-            buttonSendCommand.Size = new Size(138, 28);
-            buttonSendCommand.TabIndex = 2;
-            buttonSendCommand.Text = "Send Command";
-            buttonSendCommand.UseVisualStyleBackColor = true;
-            buttonSendCommand.Click += buttonSendCommand_Click;
-            // 
-            // textBoxClientCommand
-            // 
-            tableLayoutPanel2.SetColumnSpan(textBoxClientCommand, 2);
-            textBoxClientCommand.Dock = DockStyle.Fill;
-            textBoxClientCommand.Location = new Point(3, 106);
-            textBoxClientCommand.Multiline = true;
-            textBoxClientCommand.Name = "textBoxClientCommand";
-            textBoxClientCommand.Size = new Size(283, 64);
-            textBoxClientCommand.TabIndex = 3;
-            textBoxClientCommand.TextChanged += textBoxClientCommand_TextChanged;
             // 
             // Form1
             // 
