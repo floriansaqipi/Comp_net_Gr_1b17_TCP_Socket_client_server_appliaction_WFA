@@ -16,5 +16,29 @@ namespace Client
         {
             InitializeComponent();
         }
+
+
+        #region Event Handlers
+        
+        private void connectButtonHandler(object sender, EventArgs e)
+        {
+
+        }
+
+        private void disconnectButtonHandler(object sender, EventArgs e) 
+        {
+        
+        }
+
+        private void sendCommandButtonHandler(object sender, EventArgs e)
+        {
+
+        }
+
+        #endregion Event Handlers
+
+        #region Utility methods
+        #endregion Utility methods
+
     }
 }

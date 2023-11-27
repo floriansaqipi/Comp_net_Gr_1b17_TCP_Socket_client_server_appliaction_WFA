@@ -30,16 +30,16 @@
         {
             tableLayoutPanel1 = new TableLayoutPanel();
             tableLayoutPanel2 = new TableLayoutPanel();
-            DisconnectButton = new Button();
+            disconnectButton = new Button();
             IPAddressTextBox = new TextBox();
             PortTextBox = new TextBox();
             IPAddress = new Label();
             PortLabel = new Label();
-            ConnectButton = new Button();
+            connectButton = new Button();
             tableLayoutPanel3 = new TableLayoutPanel();
-            Sendbutton = new Button();
-            CommendtextBox = new TextBox();
-            staticTextBox = new TextBox();
+            sendCommandButton = new Button();
+            commandTextBox = new TextBox();
+            statusTextBox = new TextBox();
             tableLayoutPanel1.SuspendLayout();
             tableLayoutPanel2.SuspendLayout();
             tableLayoutPanel3.SuspendLayout();
@@ -48,11 +48,11 @@
             // tableLayoutPanel1
             // 
             tableLayoutPanel1.ColumnCount = 2;
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 60F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 40F));
             tableLayoutPanel1.Controls.Add(tableLayoutPanel2, 1, 1);
             tableLayoutPanel1.Controls.Add(tableLayoutPanel3, 1, 0);
-            tableLayoutPanel1.Controls.Add(staticTextBox, 0, 0);
+            tableLayoutPanel1.Controls.Add(statusTextBox, 0, 0);
             tableLayoutPanel1.Dock = DockStyle.Fill;
             tableLayoutPanel1.Location = new Point(0, 0);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -67,39 +67,40 @@
             tableLayoutPanel2.ColumnCount = 2;
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tableLayoutPanel2.Controls.Add(DisconnectButton, 0, 3);
+            tableLayoutPanel2.Controls.Add(disconnectButton, 0, 3);
             tableLayoutPanel2.Controls.Add(IPAddressTextBox, 1, 1);
             tableLayoutPanel2.Controls.Add(PortTextBox, 1, 2);
             tableLayoutPanel2.Controls.Add(IPAddress, 0, 1);
             tableLayoutPanel2.Controls.Add(PortLabel, 0, 2);
-            tableLayoutPanel2.Controls.Add(ConnectButton, 1, 3);
+            tableLayoutPanel2.Controls.Add(connectButton, 1, 3);
             tableLayoutPanel2.Dock = DockStyle.Fill;
-            tableLayoutPanel2.Location = new Point(403, 207);
+            tableLayoutPanel2.Location = new Point(483, 207);
             tableLayoutPanel2.Name = "tableLayoutPanel2";
             tableLayoutPanel2.RowCount = 4;
-            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 81.30081F));
-            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 18.6991863F));
-            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Absolute, 34F));
-            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Absolute, 41F));
-            tableLayoutPanel2.Size = new Size(394, 198);
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 75.2F));
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 24.8F));
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Absolute, 32F));
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Absolute, 40F));
+            tableLayoutPanel2.Size = new Size(314, 198);
             tableLayoutPanel2.TabIndex = 0;
             // 
-            // DisconnectButton
+            // disconnectButton
             // 
-            DisconnectButton.Dock = DockStyle.Fill;
-            DisconnectButton.Location = new Point(3, 160);
-            DisconnectButton.Name = "DisconnectButton";
-            DisconnectButton.Size = new Size(191, 35);
-            DisconnectButton.TabIndex = 1;
-            DisconnectButton.Text = "Disconnect";
-            DisconnectButton.UseVisualStyleBackColor = true;
+            disconnectButton.Dock = DockStyle.Fill;
+            disconnectButton.Location = new Point(3, 160);
+            disconnectButton.Name = "disconnectButton";
+            disconnectButton.Size = new Size(151, 35);
+            disconnectButton.TabIndex = 1;
+            disconnectButton.Text = "Disconnect";
+            disconnectButton.UseVisualStyleBackColor = true;
+            disconnectButton.Click += connectButtonHandler;
             // 
             // IPAddressTextBox
             // 
             IPAddressTextBox.Dock = DockStyle.Fill;
-            IPAddressTextBox.Location = new Point(200, 103);
+            IPAddressTextBox.Location = new Point(160, 97);
             IPAddressTextBox.Name = "IPAddressTextBox";
-            IPAddressTextBox.Size = new Size(191, 23);
+            IPAddressTextBox.Size = new Size(151, 23);
             IPAddressTextBox.TabIndex = 4;
             IPAddressTextBox.Text = "127.0.0.1";
             IPAddressTextBox.TextAlign = HorizontalAlignment.Center;
@@ -107,9 +108,9 @@
             // PortTextBox
             // 
             PortTextBox.Dock = DockStyle.Fill;
-            PortTextBox.Location = new Point(200, 126);
+            PortTextBox.Location = new Point(160, 128);
             PortTextBox.Name = "PortTextBox";
-            PortTextBox.Size = new Size(191, 23);
+            PortTextBox.Size = new Size(151, 23);
             PortTextBox.TabIndex = 5;
             PortTextBox.Text = "5000";
             PortTextBox.TextAlign = HorizontalAlignment.Center;
@@ -118,9 +119,9 @@
             // 
             IPAddress.AutoSize = true;
             IPAddress.Dock = DockStyle.Fill;
-            IPAddress.Location = new Point(3, 100);
+            IPAddress.Location = new Point(3, 94);
             IPAddress.Name = "IPAddress";
-            IPAddress.Size = new Size(191, 23);
+            IPAddress.Size = new Size(151, 31);
             IPAddress.TabIndex = 2;
             IPAddress.Text = "IP Address:";
             IPAddress.TextAlign = ContentAlignment.MiddleRight;
@@ -129,70 +130,72 @@
             // 
             PortLabel.AutoSize = true;
             PortLabel.Dock = DockStyle.Fill;
-            PortLabel.Location = new Point(3, 123);
+            PortLabel.Location = new Point(3, 125);
             PortLabel.Name = "PortLabel";
-            PortLabel.Size = new Size(191, 34);
+            PortLabel.Size = new Size(151, 32);
             PortLabel.TabIndex = 3;
             PortLabel.Text = "Port:";
             PortLabel.TextAlign = ContentAlignment.MiddleRight;
             // 
-            // ConnectButton
+            // connectButton
             // 
-            ConnectButton.Dock = DockStyle.Fill;
-            ConnectButton.Location = new Point(200, 160);
-            ConnectButton.Name = "ConnectButton";
-            ConnectButton.Size = new Size(191, 35);
-            ConnectButton.TabIndex = 0;
-            ConnectButton.Text = "Connect";
-            ConnectButton.UseVisualStyleBackColor = true;
+            connectButton.Dock = DockStyle.Fill;
+            connectButton.Location = new Point(160, 160);
+            connectButton.Name = "connectButton";
+            connectButton.Size = new Size(151, 35);
+            connectButton.TabIndex = 0;
+            connectButton.Text = "Connect";
+            connectButton.UseVisualStyleBackColor = true;
+            connectButton.Click += connectButtonHandler;
             // 
             // tableLayoutPanel3
             // 
             tableLayoutPanel3.ColumnCount = 2;
             tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tableLayoutPanel3.Controls.Add(Sendbutton, 1, 2);
-            tableLayoutPanel3.Controls.Add(CommendtextBox, 0, 1);
+            tableLayoutPanel3.Controls.Add(sendCommandButton, 1, 2);
+            tableLayoutPanel3.Controls.Add(commandTextBox, 0, 1);
             tableLayoutPanel3.Dock = DockStyle.Fill;
-            tableLayoutPanel3.Location = new Point(403, 3);
+            tableLayoutPanel3.Location = new Point(483, 3);
             tableLayoutPanel3.Name = "tableLayoutPanel3";
             tableLayoutPanel3.RowCount = 3;
-            tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Percent, 59.375F));
-            tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Percent, 40.625F));
-            tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Absolute, 53F));
-            tableLayoutPanel3.Size = new Size(394, 198);
+            tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Percent, 47.7419357F));
+            tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Percent, 52.2580643F));
+            tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Absolute, 38F));
+            tableLayoutPanel3.Size = new Size(314, 198);
             tableLayoutPanel3.TabIndex = 1;
             // 
-            // Sendbutton
+            // sendCommandButton
             // 
-            Sendbutton.Dock = DockStyle.Fill;
-            Sendbutton.Location = new Point(200, 147);
-            Sendbutton.Name = "Sendbutton";
-            Sendbutton.Size = new Size(191, 48);
-            Sendbutton.TabIndex = 1;
-            Sendbutton.Text = "Send";
-            Sendbutton.UseVisualStyleBackColor = true;
+            sendCommandButton.Dock = DockStyle.Fill;
+            sendCommandButton.Location = new Point(160, 162);
+            sendCommandButton.Name = "sendCommandButton";
+            sendCommandButton.Size = new Size(151, 33);
+            sendCommandButton.TabIndex = 1;
+            sendCommandButton.Text = "Send Command";
+            sendCommandButton.UseVisualStyleBackColor = true;
+            sendCommandButton.Click += sendCommandButtonHandler;
             // 
-            // CommendtextBox
+            // commandTextBox
             // 
-            tableLayoutPanel3.SetColumnSpan(CommendtextBox, 2);
-            CommendtextBox.Dock = DockStyle.Fill;
-            CommendtextBox.Location = new Point(3, 89);
-            CommendtextBox.Multiline = true;
-            CommendtextBox.Name = "CommendtextBox";
-            CommendtextBox.Size = new Size(388, 52);
-            CommendtextBox.TabIndex = 2;
+            tableLayoutPanel3.SetColumnSpan(commandTextBox, 2);
+            commandTextBox.Dock = DockStyle.Fill;
+            commandTextBox.Location = new Point(3, 79);
+            commandTextBox.Multiline = true;
+            commandTextBox.Name = "commandTextBox";
+            commandTextBox.Size = new Size(308, 77);
+            commandTextBox.TabIndex = 2;
             // 
-            // staticTextBox
+            // statusTextBox
             // 
-            staticTextBox.Dock = DockStyle.Fill;
-            staticTextBox.Location = new Point(3, 3);
-            staticTextBox.Multiline = true;
-            staticTextBox.Name = "staticTextBox";
-            tableLayoutPanel1.SetRowSpan(staticTextBox, 2);
-            staticTextBox.ScrollBars = ScrollBars.Vertical;
-            staticTextBox.Size = new Size(394, 402);
-            staticTextBox.TabIndex = 2;
+            statusTextBox.Dock = DockStyle.Fill;
+            statusTextBox.Location = new Point(3, 3);
+            statusTextBox.Multiline = true;
+            statusTextBox.Name = "statusTextBox";
+            tableLayoutPanel1.SetRowSpan(statusTextBox, 2);
+            statusTextBox.ScrollBars = ScrollBars.Vertical;
+            statusTextBox.Size = new Size(474, 402);
+            statusTextBox.TabIndex = 2;
             // 
             // ClientForm
             // 
@@ -216,14 +219,14 @@
         private TableLayoutPanel tableLayoutPanel1;
         private TableLayoutPanel tableLayoutPanel2;
         private TableLayoutPanel tableLayoutPanel3;
-        private TextBox staticTextBox;
-        private Button ConnectButton;
-        private Button DisconnectButton;
+        private TextBox statusTextBox;
+        private Button connectButton;
+        private Button disconnectButton;
         private Label IPAddress;
         private Label PortLabel;
         private TextBox IPAddressTextBox;
         private TextBox PortTextBox;
-        private Button Sendbutton;
-        private TextBox CommendtextBox;
+        private Button sendCommandButton;
+        private TextBox commandTextBox;
     }
 }
