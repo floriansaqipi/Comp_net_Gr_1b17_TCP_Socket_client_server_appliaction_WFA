@@ -46,10 +46,32 @@ namespace Server
             }
         }
 
-        //TODO : Festim Krasniqi - implement this method, needs to loop through list disconnect clients, stop listening also.
+       
         private void stopServerButtonHandler(object sender, EventArgs e)
         {
-
+            keepWaiting = false;
+            statusTextBox.Text = string.Empty;
+            statusTextBox.Text = "Shutting down server, disconnecting all clients...";
+            try
+            {
+                foreach (TcpClient client in clientList)
+                {
+                    client.Close();
+                    clientCount--;
+                    connectedClientsTextBox.Text = clientCount.ToString();
+                }
+                clientList.Clear();
+                listener.Stop();
+            }
+            catch (Exception ex)
+            {
+                statusTextBox.Text += CRLF + "Problem stopping the server, or client connections forcebly closed.";
+                statusTextBox.Text += CRLF + ex.ToString();
+            }
+            startServerButton.Enabled = true;
+            stopServerButton.Enabled = false;
+            //TODO: only if client is connected to this 
+            sendCommandButton.Enabled = false;
         }
 
         private void sendCommandButtonHandler(object sender, EventArgs e)
