@@ -33,7 +33,7 @@
             labelConnectedClients = new Label();
             connectedClientsTextBox = new TextBox();
             sendCommandButton = new Button();
-            textBoxClientCommand = new TextBox();
+            clientCommandTextBox = new TextBox();
             tableLayoutPanel3 = new TableLayoutPanel();
             startServerButton = new Button();
             stopServerButton = new Button();
@@ -69,7 +69,7 @@
             tableLayoutPanel2.Controls.Add(labelConnectedClients, 0, 0);
             tableLayoutPanel2.Controls.Add(connectedClientsTextBox, 1, 0);
             tableLayoutPanel2.Controls.Add(sendCommandButton, 1, 3);
-            tableLayoutPanel2.Controls.Add(textBoxClientCommand, 0, 2);
+            tableLayoutPanel2.Controls.Add(clientCommandTextBox, 0, 2);
             tableLayoutPanel2.Dock = DockStyle.Fill;
             tableLayoutPanel2.Location = new Point(504, 3);
             tableLayoutPanel2.Name = "tableLayoutPanel2";
@@ -113,15 +113,15 @@
             sendCommandButton.UseVisualStyleBackColor = true;
             sendCommandButton.Click += sendCommandButtonHandler;
             // 
-            // textBoxClientCommand
+            // clientCommandTextBox
             // 
-            tableLayoutPanel2.SetColumnSpan(textBoxClientCommand, 2);
-            textBoxClientCommand.Dock = DockStyle.Fill;
-            textBoxClientCommand.Location = new Point(3, 106);
-            textBoxClientCommand.Multiline = true;
-            textBoxClientCommand.Name = "textBoxClientCommand";
-            textBoxClientCommand.Size = new Size(283, 64);
-            textBoxClientCommand.TabIndex = 3;
+            tableLayoutPanel2.SetColumnSpan(clientCommandTextBox, 2);
+            clientCommandTextBox.Dock = DockStyle.Fill;
+            clientCommandTextBox.Location = new Point(3, 106);
+            clientCommandTextBox.Multiline = true;
+            clientCommandTextBox.Name = "clientCommandTextBox";
+            clientCommandTextBox.Size = new Size(283, 64);
+            clientCommandTextBox.TabIndex = 3;
             // 
             // tableLayoutPanel3
             // 
@@ -227,6 +227,6 @@
         private Label labelConnectedClients;
         private TextBox connectedClientsTextBox;
         private Button sendCommandButton;
-        private TextBox textBoxClientCommand;
+        private TextBox clientCommandTextBox;
     }
 }
