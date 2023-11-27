@@ -1,65 +1,189 @@
+using System.Net;
+using System.Net.Sockets;
+
 namespace Server
 {
-    public partial class Form1 : Form
+    public partial class ServerForm : Form
     {
-        public Form1()
+        //TODO: clean up handling errors
+        //constants
+        private const string CRLF = "\r\n";
+
+        //fields
+        private List<TcpClient> clientList = new List<TcpClient>();
+        private TcpListener listener;
+        private int clientCount;
+        private bool keepWaiting;
+        private IPAddress ipAddress = IPAddress.Any;
+        private int port = 5000;
+
+        public ServerForm()
         {
             InitializeComponent();
+            serverClosedButtonState();
         }
 
-        private void portTextBox_TextChanged(object sender, EventArgs e)
+        #region Event Handlers
+        private void startServerButtonHandler(object sender, EventArgs e)
         {
+            try
+            {
+                if(!Int32.TryParse(portTextBox.Text, out port))
+                {
+                    displayToTextBox("You entered an invalid port number. Using port: " + port);
+                }
 
+                Thread t = new Thread(listenForIncomingConnections);
+                t.Name = "Server Listener Thread";
+                t.IsBackground = true;
+                t.Start();
+
+                serverStartedButtonState();
+
+            } catch (Exception ex){
+                handleException("Problem starting the server.",ex);
+            }
         }
 
-        private void textBox_TextChanged(object sender, EventArgs e)
+       
+        private void stopServerButtonHandler(object sender, EventArgs e)
         {
+            keepWaiting = false;
+            statusTextBox.Text = string.Empty;
+            statusTextBox.Text = "Shutting down server, disconnecting all clients...";
+            try
+            {
+                foreach (TcpClient client in clientList)
+                {
+                    client.Close();
+                    clientCount--;
+                    connectedClientsTextBox.Text = clientCount.ToString();
+                }
+                clientList.Clear();
+                listener.Stop();
+            }
+            catch (Exception ex)
+            {
+                handleException("Problem stopping the server, or client connections forcebly closed.",ex);
+            }
 
+
+            startServerButton.Enabled = true;
+            stopServerButton.Enabled = false;
+            //TODO: only if client is connected to this 
+            sendCommandButton.Enabled = false;
         }
 
-        private void tableLayoutPanel2_Paint(object sender, PaintEventArgs e)
+        private void sendCommandButtonHandler(object sender, EventArgs e)
         {
+            try
+            {
+                foreach(TcpClient client in clientList)
+                {
+                    StreamWriter writer = new StreamWriter(client.GetStream());
+                    writer.WriteLine(clientCommandTextBox.Text);
+                    writer.Flush();
 
+                }
+            }catch (Exception ex)
+            {
+                handleException("Problem sending commands to clients...", ex);
+            }
+            clientCommandTextBox.Text = string.Empty;
+        }
+        #endregion Event Handlers
+
+        private void listenForIncomingConnections()
+        {
+            try
+            {
+                keepWaiting = true;
+                listener = new TcpListener(ipAddress, port);
+                listener.Start();
+                displayToTextBox("Server started listening on port: " + port);
+
+                while (keepWaiting)
+                {
+                    displayToTextBox("Waiting for incoming client connections...");
+                    TcpClient client = listener.AcceptTcpClient(); //blocks until client connection accepted
+                    displayToTextBox("Incoming client connection accepted...");
+                    Thread t = new Thread(processClientRequests);
+                    t.IsBackground = true;
+                    t.Start(client);
+                }
+            } catch (SocketException se) 
+            {
+                displayToTextBox("Problem accepting Tcp Client!");
+                Console.WriteLine(se.Message);
+            } catch (Exception ex)
+            {
+                displayToTextBox("Problem starting server");
+                Console.WriteLine(ex.Message);
+            }
+            displayToTextBox("Exiting listening thread...");
+            statusTextBox.Text = string.Empty;
         }
 
-        private void tableLayoutPanel3_Paint(object sender, PaintEventArgs e)
+        private void processClientRequests(object tcpClient)
         {
+            TcpClient client = (TcpClient) tcpClient;
+            clientList.Add(client);
+            clientCount++;
+            
+            string input = string.Empty;
 
+            try 
+            { 
+                StreamReader reader = new StreamReader(client.GetStream());
+                StreamWriter writer = new StreamWriter(client.GetStream()); 
+
+                while (client.Connected)
+                {
+                    input = reader.ReadLine(); //blocks until it receives something from the client
+                    switch (input) 
+                    {
+                        default:
+                            {
+                                displayToTextBox("From client: " + client.GetHashCode() + ": " + input);
+                                writer.WriteLine("Server received: " + input);
+                                writer.Flush();
+                                break;
+                            }
+                    }
+                }
+            } catch (Exception ex) 
+            {
+                displayToTextBox("Problem processing client requests!");
+                Console.WriteLine(ex.Message);
+            }
+            clientList.Remove(client);
+            clientCount--;
+            connectedClientsTextBox.Text = clientCount.ToString();
+            displayToTextBox("Finished processing requests for client: " + client.GetHashCode());
         }
 
-        private void portLabel_Click(object sender, EventArgs e)
+        private void handleException(string message, Exception ex)
         {
-
+            displayToTextBox(message);
+            Console.WriteLine(ex.Message);
+        }
+        private void displayToTextBox(string error)
+        {
+            if(error == string.Empty) { return; }
+            statusTextBox.Text += CRLF  + error;  
         }
 
-        private void stopServerButton_Click(object sender, EventArgs e)
+        private void serverStartedButtonState()
         {
-
+            startServerButton.Enabled = false;
+            stopServerButton.Enabled = true;
+            sendCommandButton.Enabled = true;
         }
-
-        private void startServerButton_Click(object sender, EventArgs e)
+        private void serverClosedButtonState()
         {
-
-        }
-
-        private void labelConnectedClients_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textboxConnectedClients_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void buttonSendCommand_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBoxClientCommand_TextChanged(object sender, EventArgs e)
-        {
-
+            startServerButton.Enabled = true;
+            stopServerButton.Enabled = false;
+            sendCommandButton.Enabled = false;
         }
     }
 }
