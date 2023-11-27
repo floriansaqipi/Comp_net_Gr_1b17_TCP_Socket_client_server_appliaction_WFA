@@ -41,8 +41,7 @@ namespace Server
                 serverStartedButtonState();
 
             } catch (Exception ex){
-                displayToTextBox("Problem starting the server.");
-                Console.WriteLine(ex.Message);
+                handleException("Problem starting the server.",ex);
             }
         }
 
@@ -65,9 +64,10 @@ namespace Server
             }
             catch (Exception ex)
             {
-                statusTextBox.Text += CRLF + "Problem stopping the server, or client connections forcebly closed.";
-                statusTextBox.Text += CRLF + ex.ToString();
+                handleException("Problem stopping the server, or client connections forcebly closed.",ex);
             }
+
+
             startServerButton.Enabled = true;
             stopServerButton.Enabled = false;
             //TODO: only if client is connected to this 
@@ -84,12 +84,12 @@ namespace Server
                     writer.WriteLine(clientCommandTextBox.Text);
                     writer.Flush();
 
-                    clientCommandTextBox.Text = string.Empty;
                 }
             }catch (Exception ex)
             {
-
+                handleException("Problem sending commands to clients...", ex);
             }
+            clientCommandTextBox.Text = string.Empty;
         }
         #endregion Event Handlers
 
