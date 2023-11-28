@@ -13,19 +13,25 @@ namespace Client
 {
     public partial class ClientForm : Form
     {
-        //TODO: Fisnik Hazrolli - add constants here like CRLF, LOCALHOST, DEFAULT PORT
-
-        //Constants
-
-        //TODO: Fisnik Hazrolli - add fields here serverIp, port, client 
+            // Constants
+        private const string CRLF = "\r\n";
+        private const string LOCALHOST = "127.0.0.1";
+        private const int DEFAULT_PORT = 5000;
 
         // Fields
+        private IPAddress serverIpAddress;
+        private int port;
+        private TcpClient client;
 
 
-        //TODO: Fisnik Hazrolli - initialize necessary components here in the constructor
-        public ClientForm()
+         public ClientForm()
         {
             InitializeComponent();
+            serverIpAddress = getIpAddress(ipAddresstextBox.Text);
+            port = getPort(portTextBox.Text);
+            connectButton.Enabled = true;
+            disconnectButton.Enabled = false;
+            sendCommandButton.Enabled = false;
         }
 
 
