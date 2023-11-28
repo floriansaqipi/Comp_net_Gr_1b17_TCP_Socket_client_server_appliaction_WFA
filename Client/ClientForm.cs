@@ -48,11 +48,26 @@ namespace Client
         {
         
         }
-        //TODO: Fisnik Hazrolli - implement this
         private void sendCommandButtonHandler(object sender, EventArgs e)
         {
-
+            try
+            {
+                if (client.Connected)
+                {
+                    StreamWriter writer = new StreamWriter(client.GetStream());
+                    writer.WriteLine(commandTextBox.Text);
+                    writer.Flush();
+                    statusTextBox.Text += CRLF + "Command sent to server: " + commandTextBox.Text;
+                    commandTextBox.Text = string.Empty;
+                }
+            }
+            catch (Exception ex)
+            {
+                statusTextBox.Text += CRLF + "Problem sending command to the server!";
+                statusTextBox.Text += CRLF + ex.ToString();
+            }
         }
+        
         #endregion Event Handlers
 
 
