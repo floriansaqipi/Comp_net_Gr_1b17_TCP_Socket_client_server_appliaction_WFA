@@ -104,7 +104,21 @@ namespace Client
         //TODO - Fjolla Ajeti implement this 
         private IPAddress getIPAddress(string ipAddress)
         {
-            return null;
+            IPAddress address = IPAddress.Parse(LOCALHOST);
+            try
+            {
+                if (!IPAddress.TryParse(ipAddress, out address))
+                {
+                    address = IPAddress.Parse(LOCALHOST);
+                }
+            }
+            catch (Exception ex)
+            {
+                statusTextBox.Text += CRLF + "Invalid IP address - Client will connect to: " + address.ToString();
+                statusTextBox.Text += CRLF + ex.ToString();
+            }
+
+            return address;
         }
 
         //TODO - Festim Kraniqi  implement this
