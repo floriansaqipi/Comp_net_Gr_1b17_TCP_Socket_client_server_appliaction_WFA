@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Client.Utils;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Net;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -29,9 +31,7 @@ namespace Client
             InitializeComponent();
             serverIpAddress = getIpAddress(ipAddresstextBox.Text);
             port = getPort(portTextBox.Text);
-            connectButton.Enabled = true;
-            disconnectButton.Enabled = false;
-            sendCommandButton.Enabled = false;
+            clientDisonnectedButtonState();
         }
 
 
@@ -40,7 +40,22 @@ namespace Client
         //TODO: Florian Saqipi - implement this 
         private void connectButtonHandler(object sender, EventArgs e)
         {
+            try
+            {
+                serverIpAddress = getIpAddress(ipAddressTextBox.Text);
+                port = getPort(portTextBox.Text);
 
+                client = new TcpClient(serverIpAddress.ToString(), port);
+                Thread t = new Thread(processClientTransactions);
+                t.IsBackground = true;
+                t.Start(client);
+
+                clientDisonnectedButtonState();
+            }
+            catch (Exception ex)
+            {
+                handleException("Problem connecting to the server.",ex);
+            }
         }
 
         //TODO: Fjolla Ajeti - implement this 
@@ -57,23 +72,64 @@ namespace Client
                     StreamWriter writer = new StreamWriter(client.GetStream());
                     writer.WriteLine(commandTextBox.Text);
                     writer.Flush();
-                    statusTextBox.Text += CRLF + "Command sent to server: " + commandTextBox.Text;
+                    displayToTextBox("Command sent to server: " + commandTextBox.Text);
                     commandTextBox.Text = string.Empty;
                 }
             }
             catch (Exception ex)
             {
-                statusTextBox.Text += CRLF + "Problem sending command to the server!";
-                statusTextBox.Text += CRLF + ex.ToString();
+                handleException("Problem sending command to the server!", ex);
             }
         }
         
-        #endregion Event Handlers
+        #endregion Event Handlers   
 
 
         private void processClientTransactions(object tcpClient)
         {
+            TcpClient client = (TcpClient)tcpClient;
+            string input = string.Empty;
+            StreamReader reader = null;
+            StreamWriter writer = null;
+            try
+            {
+                reader = new StreamReader(client.GetStream());
+                writer = new StreamWriter(client.GetStream());
 
+                // Say Hello to the server once we connect...
+                writer.WriteLine("Hello from a client! Ready to do your bidding!");
+                writer.Flush();
+
+                while (client.Connected)
+                {
+                    input = reader.ReadLine();  //block here until a server send something
+                    if (input == null)
+                    {
+                        disconnectFromServer();
+                    }
+                    else
+                    {
+                        switch (input)
+                        {
+                          
+                            default:
+                                {
+                                    statusTextBox.invokeEx(stb => stb.Text += CRLF + " Received from Server: " + input);
+                                    break;
+                                }
+                        }
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                handleException("Problem communicating with the server. Connection may have been intentionally disconnected.",ex);
+            }
+            disconnectButton.invokeEx(dcb => dcb.Enabled = false);
+            connectButton.invokeEx(cb => cb.Enabled = true);
+            //statusTextBox.invokeEx(stb => stb.Text = string.Empty);
+            //add maybe send Command Button to false
         }
 
         //TODO: Fjolla Ajeti - implement this
@@ -116,5 +172,27 @@ namespace Client
 
         #endregion Utility methods
 
+        private void handleException(string message, Exception ex)
+        {
+            displayToTextBox(message);
+            Console.WriteLine(ex.Message);
+        }
+        private void displayToTextBox(string error)
+        {
+            if (error == string.Empty) { return; }
+            statusTextBox.Text += CRLF + error;
+        }
+        private void clientConnectedButtonState()
+        {
+            connectButton.Enabled = false;
+            disconnectButton.Enabled = true;
+            sendCommandButton.Enabled = true;
+        }
+        private void clientDisonnectedButtonState()
+        {
+            connectButton.Enabled = true;
+            disconnectButton.Enabled = false;
+            sendCommandButton.Enabled = false;
+        }
     }
 }
