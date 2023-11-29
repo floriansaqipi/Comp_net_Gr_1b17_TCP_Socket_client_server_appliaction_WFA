@@ -46,7 +46,7 @@ namespace Client
         //TODO: Fjolla Ajeti - implement this 
         private void disconnectButtonHandler(object sender, EventArgs e) 
         {
-        
+            disconnectFromServer();
         }
         private void sendCommandButtonHandler(object sender, EventArgs e)
         {
@@ -79,7 +79,22 @@ namespace Client
         //TODO: Fjolla Ajeti - implement this
         private void disconnectFromServer()
         {
+            try
+            {
+                client.Close();
+                statusTextBox.invokeEx(stb => stb.Text += CRLF + "Disconnected from the server!");
+                disconnectButton.invokeEx(db => db.Enabled = false);
+                connectButton.invokeEx(cb => cb.Enabled = true);
+                sendCommandButton.invokeEx(scb => scb.Enabled = false);
+                statusTextBox.invokeEx(stb => stb.Text = string.Empty);
 
+            }
+            catch (Exception ex)
+            {
+                statusTextBox.invokeEx(stb => stb.Text += CRLF + "Problem disconnecting from the server.");
+                statusTextBox.invokeEx(stb => stb.Text += CRLF + ex.ToString());
+            }
+            statusTextBox.invokeEx(stb => stb.Text = string.Empty);
         }
 
 
