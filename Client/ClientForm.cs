@@ -15,7 +15,7 @@ namespace Client
 {
     public partial class ClientForm : Form
     {
-            // Constants
+        // Constants
         private const string CRLF = "\r\n";
         private const string LOCALHOST = "127.0.0.1";
         private const int DEFAULT_PORT = 5000;
@@ -26,24 +26,24 @@ namespace Client
         private TcpClient client;
 
 
-         public ClientForm()
+        public ClientForm()
         {
             InitializeComponent();
-            serverIpAddress = getIpAddress(ipAddresstextBox.Text);
-            port = getPort(portTextBox.Text);
+            serverIpAddress = getIPAddress(IPAddressTextBox.Text);
+            port = getPort(PortTextBox.Text);
             clientDisonnectedButtonState();
         }
 
 
         #region Event Handlers
-        
+
         //TODO: Florian Saqipi - implement this 
         private void connectButtonHandler(object sender, EventArgs e)
         {
             try
             {
-                serverIpAddress = getIpAddress(ipAddressTextBox.Text);
-                port = getPort(portTextBox.Text);
+                serverIpAddress = getIPAddress(IPAddressTextBox.Text);
+                port = getPort(PortTextBox.Text);
 
                 client = new TcpClient(serverIpAddress.ToString(), port);
                 Thread t = new Thread(processClientTransactions);
@@ -54,12 +54,12 @@ namespace Client
             }
             catch (Exception ex)
             {
-                handleException("Problem connecting to the server.",ex);
+                handleException("Problem connecting to the server.", ex);
             }
         }
 
         //TODO: Fjolla Ajeti - implement this 
-        private void disconnectButtonHandler(object sender, EventArgs e) 
+        private void disconnectButtonHandler(object sender, EventArgs e)
         {
             disconnectFromServer();
         }
@@ -81,7 +81,7 @@ namespace Client
                 handleException("Problem sending command to the server!", ex);
             }
         }
-        
+
         #endregion Event Handlers   
 
 
@@ -111,7 +111,7 @@ namespace Client
                     {
                         switch (input)
                         {
-                          
+
                             default:
                                 {
                                     statusTextBox.invokeEx(stb => stb.Text += CRLF + " Received from Server: " + input);
@@ -124,7 +124,7 @@ namespace Client
             }
             catch (Exception ex)
             {
-                handleException("Problem communicating with the server. Connection may have been intentionally disconnected.",ex);
+                handleException("Problem communicating with the server. Connection may have been intentionally disconnected.", ex);
             }
             disconnectButton.invokeEx(dcb => dcb.Enabled = false);
             connectButton.invokeEx(cb => cb.Enabled = true);
@@ -154,8 +154,11 @@ namespace Client
         }
 
 
+       
+
+
         #region Utility methods
-        
+
 
         //TODO - Fjolla Ajeti implement this 
         private IPAddress getIPAddress(string ipAddress)
@@ -177,10 +180,24 @@ namespace Client
             return address;
         }
 
-        //TODO - Festim Kraniqi  implement this
-        private int getPort(string serverPort) 
+       
+        private int getPort(string serverPort)
         {
-            return -1;
+            int port = DEFAULT_PORT;
+
+            try
+            {
+                if (!Int32.TryParse(serverPort, out port))
+                {
+                    port = DEFAULT_PORT;
+                }
+            }
+            catch (Exception ex)
+            {
+                statusTextBox.Text += CRLF + "Invalid port value - Client will connect to port:" + port.ToString();
+                statusTextBox.Text = ex.ToString();
+            }
+            return port;
         }
 
 
@@ -208,5 +225,7 @@ namespace Client
             disconnectButton.Enabled = false;
             sendCommandButton.Enabled = false;
         }
+
+       
     }
 }

@@ -104,6 +104,7 @@
             IPAddressTextBox.TabIndex = 4;
             IPAddressTextBox.Text = "127.0.0.1";
             IPAddressTextBox.TextAlign = HorizontalAlignment.Center;
+           
             // 
             // PortTextBox
             // 
