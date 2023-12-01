@@ -83,6 +83,53 @@ namespace PrivilegedClient
             }
         }
 
+        private void createFileButtonHandler(object sender, EventArgs e)
+        {
+            try
+            {
+                if (client.Connected)
+                {
+                    StreamWriter writer = new StreamWriter(client.GetStream());
+                    writer.WriteLine("CREATE_FILE");
+                    writer.Flush();
+                    writer.WriteLine(createFileNameTextBox.Text);
+                    writer.Flush();
+                    displayToTextBox("Create file req sent to the server. File Name: " + createFileNameTextBox.Text);
+                    createFileNameTextBox.Text = string.Empty;
+                }
+            }
+            catch (Exception ex)
+            {
+                handleException("Problem sending command to the server!", ex);
+            }
+        }
+
+        private void deleteFileButtonHandler(object sender, EventArgs e)
+        {
+            try
+            {
+                if (client.Connected)
+                {
+                    StreamWriter writer = new StreamWriter(client.GetStream());
+                    writer.WriteLine("DELETE_FILE");
+                    writer.Flush();
+                    writer.WriteLine(deleteFileNameTextBox.Text);
+                    writer.Flush();
+                    displayToTextBox("Delete file req sent to the server. File Name:" + commandTextBox.Text);
+                    deleteFileNameTextBox.Text = string.Empty;
+                }
+            }
+            catch (Exception ex)
+            {
+                handleException("Problem sending command to the server!",ex);
+            }
+        }
+
+        private void fileExplorerButtonHandler(object sender, EventArgs e)
+        {
+
+        }
+
         #endregion Event Handlers   
 
 
@@ -143,6 +190,9 @@ namespace PrivilegedClient
                 disconnectButton.invokeEx(db => db.Enabled = false);
                 connectButton.invokeEx(cb => cb.Enabled = true);
                 sendCommandButton.invokeEx(scb => scb.Enabled = false);
+                createFileButton.invokeEx(cb => cb.Enabled = false);
+                deleteFileButton.invokeEx(db => db.Enabled = false);
+                fileExplorerButton.invokeEx(feb => feb.Enabled = false);
 
             }
             catch (Exception ex)
@@ -231,12 +281,18 @@ namespace PrivilegedClient
             connectButton.Enabled = false;
             disconnectButton.Enabled = true;
             sendCommandButton.Enabled = true;
+            createFileButton.Enabled = true;
+            deleteFileButton.Enabled = true;
+            fileExplorerButton.Enabled = true;
         }
         private void clientDisconnectedButtonState()
         {
             connectButton.Enabled = true;
             disconnectButton.Enabled = false;
             sendCommandButton.Enabled = false;
+            createFileButton.Enabled = false;
+            deleteFileButton.Enabled = false;
+            fileExplorerButton.Enabled = false;
         }
     }
 }

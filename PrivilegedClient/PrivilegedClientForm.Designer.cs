@@ -61,6 +61,7 @@
             disconnectButton.TabIndex = 1;
             disconnectButton.Text = "Disconnect";
             disconnectButton.UseVisualStyleBackColor = true;
+            disconnectButton.Click += disconnectButtonHandler;
             // 
             // ipAddressLabel
             // 
@@ -92,6 +93,7 @@
             sendCommandButton.TabIndex = 6;
             sendCommandButton.Text = "Send Command";
             sendCommandButton.UseVisualStyleBackColor = true;
+            sendCommandButton.Click += sendCommandButtonHandler;
             // 
             // commandTextBox
             // 
@@ -121,6 +123,7 @@
             createFileButton.TabIndex = 9;
             createFileButton.Text = "Create File";
             createFileButton.UseVisualStyleBackColor = true;
+            createFileButton.Click += createFileButtonHandler;
             // 
             // fileNameLabel
             // 
@@ -142,6 +145,7 @@
             deleteFileButton.TabIndex = 11;
             deleteFileButton.Text = "Delete File";
             deleteFileButton.UseVisualStyleBackColor = true;
+            deleteFileButton.Click += deleteFileButtonHandler;
             // 
             // portLabel
             // 
@@ -163,6 +167,7 @@
             connectButton.TabIndex = 0;
             connectButton.Text = "Connect";
             connectButton.UseVisualStyleBackColor = true;
+            connectButton.Click += connectButtonHandler;
             // 
             // tableLayoutPanel3
             // 
@@ -255,6 +260,7 @@
             fileExplorerButton.TabIndex = 14;
             fileExplorerButton.Text = "File Explorer";
             fileExplorerButton.UseVisualStyleBackColor = true;
+            fileExplorerButton.Click += fileExplorerButtonHandler;
             // 
             // tableLayoutPanel1
             // 

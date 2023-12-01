@@ -9,13 +9,14 @@ namespace Server
         //TODO: clean up handling errors
         //constants
         private const string CRLF = "\r\n";
+        private const string FILES_PATH = "server_files/";
 
         //fields
         private List<TcpClient> clientList = new List<TcpClient>();
         private TcpListener listener;
         private int clientCount = 0;
         private bool keepWaiting;
-        private IPAddress ipAddress = IPAddress.Parse("192.168.100.25");
+        private IPAddress ipAddress = IPAddress.Parse("127.0.0.1");
         private int port = 5000;
 
         public ServerForm()
@@ -88,6 +89,7 @@ namespace Server
                 handleException("Problem sending commands to clients...", ex);
             }
             clientCommandTextBox.Text = string.Empty;
+            displayToTextBox("Broadcasting command: " + clientCommandTextBox.Text);
         }
         #endregion Event Handlers
 
@@ -124,7 +126,7 @@ namespace Server
             TcpClient client = (TcpClient) tcpClient;
             clientList.Add(client);
             clientCount++;
-            connectedClientsTextBox.invokeEx(cctx => cctx.Text = client.ToString());
+            connectedClientsTextBox.invokeEx(cctx => cctx.Text = clientCount.ToString());
             
             string input = string.Empty;
 
@@ -138,6 +140,18 @@ namespace Server
                     input = reader.ReadLine(); //blocks until it receives something from the client
                     switch (input)
                     {
+                        case "CREATE_FILE":
+                            {
+                                string fileName = reader.ReadLine();
+                                createFile(input, fileName, writer, client);
+                                break;
+                            }
+                        case "DELETE_FILE":
+                            {
+                                string fileName = reader.ReadLine();
+                                deleteFile(input, fileName, writer, client);
+                                break;
+                            }
                         default:
                             {
                                 displayToTextBoxInvoke("From client: " + client.GetHashCode() + ": " + input);
@@ -152,7 +166,7 @@ namespace Server
             } 
             catch (Exception ex)
             {
-                handleExceptionInvoke("Problem processing client requests!", ex);
+                handleExceptionInvoke("Client disconnected from server!", ex);
             }
             clientList.Remove(client);
             clientCount--;
@@ -162,6 +176,53 @@ namespace Server
             if (clientCount == 0)
             {
                 sendCommandButton.invokeEx(scb => scb.Enabled = false);
+            }
+        }
+
+        private void createFile(string input, string fileName, StreamWriter clientResWriter, TcpClient client)
+        {
+            try
+            {
+
+                displayToTextBoxInvoke("From client " + client.GetHashCode() + ": " + input + " " + fileName);
+                clientResWriter.WriteLine("Server received: " + input + " " + fileName);
+                clientResWriter.Flush();
+                StreamWriter writer = new StreamWriter(FILES_PATH + fileName);
+                clientResWriter.WriteLine("Server created file: " + fileName);
+                clientResWriter.Flush();
+                writer.Close();
+            }
+            catch (IOException ioEx)
+            {
+                handleExceptionInvoke("Problem creating file: " + fileName, ioEx);
+                clientResWriter.WriteLine("File : " + input + "could not be created");
+                clientResWriter.Flush();
+            }
+        }
+
+        private void deleteFile(string input, string fileName, StreamWriter clientResWriter, TcpClient client)
+        {
+            try
+            {
+                displayToTextBoxInvoke( "From client " + client.GetHashCode() + ": " + input + " " + fileName);
+                clientResWriter.WriteLine("Server received: " + input + " " + fileName);
+                clientResWriter.Flush();
+
+                if (!File.Exists(FILES_PATH + fileName))
+                {
+                    clientResWriter.WriteLine("File: " + fileName + " can not be deleted, it does not exist!");
+                    clientResWriter.Flush();
+                    return;
+                }
+                File.Delete(FILES_PATH + fileName);
+                clientResWriter.WriteLine("Server deleted file: " + fileName);
+                clientResWriter.Flush();
+            }
+            catch (IOException ioEx)
+            {
+                handleExceptionInvoke("Problem deleting file: " + fileName,ioEx);
+                clientResWriter.WriteLine("File : " + input + "could not be deleted");
+                clientResWriter.Flush();
             }
         }
 
