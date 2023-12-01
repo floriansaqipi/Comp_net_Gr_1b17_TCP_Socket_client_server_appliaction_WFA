@@ -25,6 +25,10 @@ namespace PrivilegedClient
         private int port;
         private TcpClient client;
 
+        //Forms
+        private FileExplorerForm fileExplorerForm = new FileExplorerForm();
+        private SimpleTextEditorForm simpleTextEditorForm = new SimpleTextEditorForm();
+
 
         public PrivilegedClientForm()
         {
@@ -127,7 +131,21 @@ namespace PrivilegedClient
 
         private void fileExplorerButtonHandler(object sender, EventArgs e)
         {
+            try
+            {
+                if (client.Connected)
+                {
+                    StreamWriter writer = new StreamWriter(client.GetStream());
+                    writer.WriteLine("GET_FILE_LIST");
+                    writer.Flush();
+                    displayToTextBox("File list req sent to the server.");
 
+                }
+            }
+            catch (Exception ex)
+            {
+                handleException("Problem sending command to the server!", ex);
+            }
         }
 
         #endregion Event Handlers   
@@ -159,7 +177,17 @@ namespace PrivilegedClient
                     {
                         switch (input)
                         {
-
+                            case "FILES_LIST_RES":
+                                {
+                                    getFiles(input, reader);
+                                    break;
+                                }
+                            case "FILE_CONTENT_RES":
+                                {
+                                    string fileName = reader.ReadLine();
+                                    getFileContent(input, fileName, reader);
+                                    break;
+                                }
                             default:
                                 {
                                     displayToTextBoxInvoke(" Received from Server: " + input);
@@ -201,6 +229,55 @@ namespace PrivilegedClient
 
             }
         }
+
+        private void getFiles(string input, StreamReader reader)
+        {
+            try
+            {
+                List<string> files = new List<string>();
+                string currentFile = string.Empty;
+                while ((currentFile = reader.ReadLine()) != "END_OF_LIST")
+                {
+                    files.Add(currentFile);
+                }
+                displayToTextBoxInvoke("Received from Server: " + input);
+                displayToTextBoxInvoke("Received " + files.Count + " files from server.");
+                fileExplorerForm.Files = files;
+                fileExplorerForm.Client = client;
+                fileExplorerForm.StatusTextBox = statusTextBox;
+                fileExplorerForm.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                handleExceptionInvoke("Problem getting files from server.",ex);
+            }
+        }
+
+        private void getFileContent(string input, string fileName, StreamReader reader)
+        {
+            try
+            {
+                List<string> fileLines = new List<string>();
+                string line = string.Empty;
+                while ((line = reader.ReadLine()) != "END_OF_FILE")
+                {
+                    fileLines.Add(line);
+                }
+                displayToTextBoxInvoke(" Received from Server: " + input);
+
+                simpleTextEditorForm.FileLines = fileLines;
+                simpleTextEditorForm.FileName = fileName;
+                simpleTextEditorForm.StatusTextBox = statusTextBox;
+                simpleTextEditorForm.Client = client;
+                displayToTextBoxInvoke(" Received file: " + fileName + " content from server.");
+                simpleTextEditorForm.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                statusTextBox.invokeEx(stb => stb.Text += CRLF + "Problem getting files from server.");
+            }
+        }
+
 
 
 

@@ -152,6 +152,17 @@ namespace Server
                                 deleteFile(input, fileName, writer, client);
                                 break;
                             }
+                        case "GET_FILE_LIST":
+                            {
+                                sendFileList(input, writer, client);
+                                break;
+                            }
+                        case "GET_FILE_CONTENT":
+                            {
+                                string fileName = reader.ReadLine();
+                                sendFileContent(input, fileName, writer, client);
+                                break;
+                            }
                         default:
                             {
                                 displayToTextBoxInvoke("From client: " + client.GetHashCode() + ": " + input);
@@ -222,6 +233,71 @@ namespace Server
             {
                 handleExceptionInvoke("Problem deleting file: " + fileName,ioEx);
                 clientResWriter.WriteLine("File : " + input + "could not be deleted");
+                clientResWriter.Flush();
+            }
+        }
+
+        private void sendFileList(string input, StreamWriter clientResWriter, TcpClient client)
+        {
+            try
+            {
+                displayToTextBoxInvoke("From client " + client.GetHashCode() + ": " + input);
+                clientResWriter.WriteLine("Server received: " + input);
+                clientResWriter.Flush();
+
+                string[] files = Directory.GetFiles(FILES_PATH);
+
+                clientResWriter.WriteLine("FILES_LIST_RES");
+                clientResWriter.Flush();
+                foreach (string file in files)
+                {
+                    clientResWriter.WriteLine(Path.GetFileName(file));
+                    clientResWriter.Flush();
+                }
+                clientResWriter.WriteLine("END_OF_LIST");
+                clientResWriter.Flush();
+            }
+            catch (Exception ex)
+            {
+                handleExceptionInvoke("Problem fetching files",ex);
+                clientResWriter.WriteLine("Files could not be fetched");
+                clientResWriter.Flush();
+            }
+        }
+
+        private void sendFileContent(string input, string fileName, StreamWriter clientResWriter, TcpClient client)
+        {
+            try
+            {
+                displayToTextBoxInvoke("From client " + client.GetHashCode() + ": " + input);
+                clientResWriter.WriteLine("Server received: " + input);
+                clientResWriter.Flush();
+
+                clientResWriter.WriteLine("FILE_CONTENT_RES");
+                clientResWriter.Flush();
+                clientResWriter.WriteLine(fileName);
+                clientResWriter.Flush();
+
+                StreamReader reader = new StreamReader(FILES_PATH + fileName);
+
+                string line = string.Empty;
+                while ((line = reader.ReadLine()) != null)
+                {
+                    clientResWriter.WriteLine(line);
+                    clientResWriter.Flush();
+                }
+                clientResWriter.WriteLine("END_OF_FILE");
+                clientResWriter.Flush();
+                clientResWriter.WriteLine("File : " + fileName + " content received from server.");
+                clientResWriter.Flush();
+
+                reader.Close();
+
+            }
+            catch (Exception ex)
+            {
+                handleExceptionInvoke("Problem fetching file content", ex);
+                clientResWriter.WriteLine("File content could not be fetched");
                 clientResWriter.Flush();
             }
         }

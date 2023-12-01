@@ -102,6 +102,7 @@
             openFileButton.TabIndex = 0;
             openFileButton.Text = "Open File";
             openFileButton.UseVisualStyleBackColor = true;
+            openFileButton.Click += openFileButtonHandler;
             // 
             // fileListView
             // 
@@ -115,6 +116,7 @@
             fileListView.TabIndex = 1;
             fileListView.UseCompatibleStateImageBehavior = false;
             fileListView.View = View.Details;
+            fileListView.Click += listViewClickHandler;
             // 
             // fileNames
             // 
@@ -129,6 +131,7 @@
             Controls.Add(tableLayoutPanel1);
             Name = "FileExplorerForm";
             Text = "FileExplorerForm";
+            Load += onFormLoad;
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.PerformLayout();
             tableLayoutPanel2.ResumeLayout(false);
