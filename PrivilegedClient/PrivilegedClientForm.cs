@@ -11,9 +11,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Client
+namespace PrivilegedClient
 {
-    public partial class ClientForm : Form
+    public partial class PrivilegedClientForm : Form
     {
         // Constants
         private const string CRLF = "\r\n";
@@ -26,7 +26,7 @@ namespace Client
         private TcpClient client;
 
 
-        public ClientForm()
+        public PrivilegedClientForm()
         {
             InitializeComponent();
             serverIpAddress = getIPAddress(ipAddressTextBox.Text);
@@ -54,7 +54,7 @@ namespace Client
             }
             catch (Exception ex)
             {
-                handleException("Problem connecting to the server.",ex);
+                handleException("Problem connecting to the server.", ex);
                 displayToTextBox("No server is found at that IP listening to that port");
             }
         }
@@ -125,7 +125,7 @@ namespace Client
             }
             catch (Exception ex)
             {
-                handleExceptionInvoke("Problem communicating with the server. Connection may have been intentionally disconnected.",ex);
+                handleExceptionInvoke("Problem communicating with the server. Connection may have been intentionally disconnected.", ex);
             }
             disconnectButton.invokeEx(dcb => dcb.Enabled = false);
             connectButton.invokeEx(cb => cb.Enabled = true);
@@ -147,13 +147,13 @@ namespace Client
             }
             catch (Exception ex)
             {
-                handleExceptionInvoke("Problem disconnecting from the server.",ex);
+                handleExceptionInvoke("Problem disconnecting from the server.", ex);
 
             }
         }
 
 
-       
+
 
 
         #region Utility methods
@@ -172,13 +172,13 @@ namespace Client
             }
             catch (Exception ex)
             {
-                handleException("Invalid IP address - Client will connect to: " + address.ToString(),ex);
+                handleException("Invalid IP address - Client will connect to: " + address.ToString(), ex);
             }
 
             return address;
         }
 
-       
+
         private int getPort(string serverPort)
         {
             int port = DEFAULT_PORT;
@@ -238,7 +238,5 @@ namespace Client
             disconnectButton.Enabled = false;
             sendCommandButton.Enabled = false;
         }
-
-       
     }
 }
