@@ -278,11 +278,6 @@ namespace PrivilegedClient
             }
         }
 
-
-
-
-
-
         #region Utility methods
 
 

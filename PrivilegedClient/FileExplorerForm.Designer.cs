@@ -92,6 +92,7 @@
             executeFileButton.TabIndex = 2;
             executeFileButton.Text = "Execute File";
             executeFileButton.UseVisualStyleBackColor = true;
+            executeFileButton.Click += executeFileButtonHandler;
             // 
             // openFileButton
             // 

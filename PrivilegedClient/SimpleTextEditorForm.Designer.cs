@@ -62,6 +62,7 @@
             saveFileButton.TabIndex = 0;
             saveFileButton.Text = "Save file to server";
             saveFileButton.UseVisualStyleBackColor = true;
+            saveFileButton.Click += saveFileButtonHandler;
             // 
             // tableLayoutPanel2
             // 
@@ -80,14 +81,14 @@
             // colorToolStripMenuItem
             // 
             colorToolStripMenuItem.Name = "colorToolStripMenuItem";
-            colorToolStripMenuItem.Size = new Size(180, 22);
+            colorToolStripMenuItem.Size = new Size(103, 22);
             colorToolStripMenuItem.Text = "Color";
             colorToolStripMenuItem.Click += colorMenuItemClickHandler;
             // 
             // fontToolStripMenuItem1
             // 
             fontToolStripMenuItem1.Name = "fontToolStripMenuItem1";
-            fontToolStripMenuItem1.Size = new Size(180, 22);
+            fontToolStripMenuItem1.Size = new Size(103, 22);
             fontToolStripMenuItem1.Text = "Font";
             fontToolStripMenuItem1.Click += fontMenuItemClickHandler;
             // 

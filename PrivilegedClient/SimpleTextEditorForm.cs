@@ -35,6 +35,36 @@ namespace PrivilegedClient
             }
         }
 
+        private void saveFileButtonHandler(object sender, EventArgs e)
+        {
+            try
+            {
+                if (client.Connected)
+                {
+                    string[] currentFileLines = fileContentRichTextBox.Lines;
+                    StreamWriter writer = new StreamWriter(client.GetStream());
+                    writer.WriteLine("WRITE_FILE_CONTENT");
+                    writer.Flush();
+                    writer.WriteLine(fileName);
+                    writer.Flush();
+                    foreach (string line in currentFileLines)
+                    {
+                        writer.WriteLine(line);
+                        writer.Flush();
+                    }
+                    writer.WriteLine("END_OF_FILE");
+                    writer.Flush();
+                    displayToTextBox("Requested write content for file : " + fileName);
+                    this.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                handleException("Problem sending command to the server!", ex);
+
+            }
+        }
+
         private void undoMenuItemClickHandler(object sender, EventArgs e)
         {
             fileContentRichTextBox.Undo();
@@ -74,6 +104,18 @@ namespace PrivilegedClient
         {
             colorDialog.ShowDialog();
             fileContentRichTextBox.SelectionColor = colorDialog.Color;
+        }
+
+        private void handleException(string message, Exception ex)
+        {
+            displayToTextBox(message);
+            Console.WriteLine(ex.Message);
+        }
+
+        private void displayToTextBox(string text)
+        {
+            if (text == string.Empty) { return; }
+            statusTextBox.Text += CRLF + text;
         }
 
 

@@ -1,4 +1,5 @@
 using Client.Utils;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 
@@ -163,6 +164,18 @@ namespace Server
                                 sendFileContent(input, fileName, writer, client);
                                 break;
                             }
+                        case "WRITE_FILE_CONTENT":
+                            {
+                                string fileName = reader.ReadLine();
+                                writeFileContent(input, fileName, writer, reader, client);
+                                break;
+                            }
+                        case "EXECUTE_FILE":
+                            {
+                                string fileName = reader.ReadLine();
+                                executeFile(input, fileName, writer, client);
+                                break;
+                            }
                         default:
                             {
                                 displayToTextBoxInvoke("From client: " + client.GetHashCode() + ": " + input);
@@ -288,9 +301,6 @@ namespace Server
                 }
                 clientResWriter.WriteLine("END_OF_FILE");
                 clientResWriter.Flush();
-                clientResWriter.WriteLine("File : " + fileName + " content received from server.");
-                clientResWriter.Flush();
-
                 reader.Close();
 
             }
@@ -299,6 +309,64 @@ namespace Server
                 handleExceptionInvoke("Problem fetching file content", ex);
                 clientResWriter.WriteLine("File content could not be fetched");
                 clientResWriter.Flush();
+            }
+        }
+
+        private void writeFileContent(string input, string fileName, StreamWriter clientResWriter, StreamReader clientReqReader, TcpClient client)
+        {
+            try
+            {
+                StreamWriter writer = new StreamWriter(FILES_PATH + fileName);
+                displayToTextBoxInvoke( "From client " + client.GetHashCode() + ": " + input + " " + fileName);
+                clientResWriter.WriteLine("Server received: " + input + " " + fileName);
+                clientResWriter.Flush();
+
+                string line = string.Empty;
+                while ((line = clientReqReader.ReadLine()) != "END_OF_FILE")
+                {
+                    writer.WriteLine(line);
+                    writer.Flush();
+                }
+                clientResWriter.WriteLine("Server updated file : " + fileName);
+                clientResWriter.Flush();
+                writer.Close();
+            }
+            catch (IOException ioEx)
+            {
+                handleExceptionInvoke("Problem creating file: " + fileName, ioEx);
+                clientResWriter.WriteLine("File : " + input + "could not be written to.");
+                clientResWriter.Flush();
+
+            }
+        }
+
+        private void executeFile(string input, string fileName, StreamWriter clientResWriter, TcpClient client)
+        {
+            try
+            {
+
+                displayToTextBoxInvoke("From client " + client.GetHashCode() + ": " + input + " " + fileName);
+                clientResWriter.WriteLine("Server received: " + input + " " + fileName);
+                clientResWriter.Flush();
+
+
+                ProcessStartInfo processStartInfo = new ProcessStartInfo
+                {
+                    FileName = "server_files\\" + fileName,
+                    UseShellExecute = true,
+                };
+                Process.Start(processStartInfo);
+
+                clientResWriter.WriteLine("Server executed file: " + fileName);
+                clientResWriter.Flush();
+            }
+            catch (Exception ex)
+            {
+                handleExceptionInvoke("Problem creating file: " + fileName, ex);
+
+                clientResWriter.WriteLine("File : " + input + "could not be executed");
+                clientResWriter.Flush();
+
             }
         }
 

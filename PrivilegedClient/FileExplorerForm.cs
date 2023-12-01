@@ -58,11 +58,40 @@ namespace PrivilegedClient
             }
         }
 
+        private void executeFileButtonHandler(object sender, EventArgs e)
+        {
+            string currentFile = fileListView.SelectedItems[0].Text;
+            try
+            {
+                if (client.Connected)
+                {
+                    StreamWriter writer = new StreamWriter(client.GetStream());
+                    writer.WriteLine("EXECUTE_FILE");
+                    writer.Flush();
+                    writer.WriteLine(currentFile);
+                    writer.Flush();
+                    displayToTextBox("Requested executing file : " + currentFile);
+                    this.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                handleException("Problem sending command to the server!",ex);
+            }
+        }
+
         private void listViewClickHandler(object sender, EventArgs e)
         {
             if (fileListView.SelectedItems.Count > 0)
             {
                 openFileButton.Enabled = true;
+                string[] fullFileName = fileListView.SelectedItems[0].Text.Split('.');
+                if (fullFileName[1] != "html")
+                {
+                    executeFileButton.Enabled = false;
+                    return;
+                }
+                executeFileButton.Enabled = true;
                 return;
             }
             openFileButton.Enabled = false;
