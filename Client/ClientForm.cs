@@ -29,9 +29,9 @@ namespace Client
          public ClientForm()
         {
             InitializeComponent();
-            serverIpAddress = getIpAddress(ipAddresstextBox.Text);
+            serverIpAddress = getIPAddress(ipAddressTextBox.Text);
             port = getPort(portTextBox.Text);
-            clientDisonnectedButtonState();
+            clientDisconnectedButtonState();
         }
 
 
@@ -42,7 +42,7 @@ namespace Client
         {
             try
             {
-                serverIpAddress = getIpAddress(ipAddressTextBox.Text);
+                serverIpAddress = getIPAddress(ipAddressTextBox.Text);
                 port = getPort(portTextBox.Text);
 
                 client = new TcpClient(serverIpAddress.ToString(), port);
@@ -50,11 +50,12 @@ namespace Client
                 t.IsBackground = true;
                 t.Start(client);
 
-                clientDisonnectedButtonState();
+                clientConnectedButtonState();
             }
             catch (Exception ex)
             {
                 handleException("Problem connecting to the server.",ex);
+                displayToTextBox("No server is found at that IP listening to that port");
             }
         }
 
@@ -114,7 +115,7 @@ namespace Client
                           
                             default:
                                 {
-                                    statusTextBox.invokeEx(stb => stb.Text += CRLF + " Received from Server: " + input);
+                                    displayToTextBoxInvoke(" Received from Server: " + input);
                                     break;
                                 }
                         }
@@ -124,7 +125,7 @@ namespace Client
             }
             catch (Exception ex)
             {
-                handleException("Problem communicating with the server. Connection may have been intentionally disconnected.",ex);
+                handleExceptionInvoke("Problem communicating with the server. Connection may have been intentionally disconnected.",ex);
             }
             disconnectButton.invokeEx(dcb => dcb.Enabled = false);
             connectButton.invokeEx(cb => cb.Enabled = true);
@@ -138,19 +139,17 @@ namespace Client
             try
             {
                 client.Close();
-                statusTextBox.invokeEx(stb => stb.Text += CRLF + "Disconnected from the server!");
+                displayToTextBoxInvoke("Disconnected from the server!");
                 disconnectButton.invokeEx(db => db.Enabled = false);
                 connectButton.invokeEx(cb => cb.Enabled = true);
                 sendCommandButton.invokeEx(scb => scb.Enabled = false);
-                statusTextBox.invokeEx(stb => stb.Text = string.Empty);
 
             }
             catch (Exception ex)
             {
-                statusTextBox.invokeEx(stb => stb.Text += CRLF + "Problem disconnecting from the server.");
-                statusTextBox.invokeEx(stb => stb.Text += CRLF + ex.ToString());
+                handleExceptionInvoke("Problem disconnecting from the server.",ex);
+
             }
-            statusTextBox.invokeEx(stb => stb.Text = string.Empty);
         }
 
 
@@ -170,8 +169,7 @@ namespace Client
             }
             catch (Exception ex)
             {
-                statusTextBox.Text += CRLF + "Invalid IP address - Client will connect to: " + address.ToString();
-                statusTextBox.Text += CRLF + ex.ToString();
+                handleException("Invalid IP address - Client will connect to: " + address.ToString(),ex);
             }
 
             return address;
@@ -180,7 +178,24 @@ namespace Client
         //TODO - Festim Kraniqi  implement this
         private int getPort(string serverPort) 
         {
-            return -1;
+            int port = DEFAULT_PORT;
+
+            try
+            {
+                if (!Int32.TryParse(serverPort, out port)
+                    || Int32.Parse(portTextBox.Text) < 1024
+                    || Int32.Parse(portTextBox.Text) > 65536)
+                {
+                    port = DEFAULT_PORT;
+                    displayToTextBox("You entered an invalid port number. Using other port");
+                }
+            }
+            catch (Exception ex)
+            {
+                handleException("Invalid Port Value - Client will connect to port: " + serverPort.ToString(), ex);
+            }
+
+            return port;
         }
 
 
@@ -191,10 +206,22 @@ namespace Client
             displayToTextBox(message);
             Console.WriteLine(ex.Message);
         }
-        private void displayToTextBox(string error)
+
+        private void handleExceptionInvoke(string message, Exception ex)
         {
-            if (error == string.Empty) { return; }
-            statusTextBox.Text += CRLF + error;
+            displayToTextBoxInvoke(message);
+            Console.WriteLine(ex.Message);
+        }
+        private void displayToTextBox(string text)
+        {
+            if (text == string.Empty) { return; }
+            statusTextBox.Text += CRLF + text;
+        }
+
+        private void displayToTextBoxInvoke(string text)
+        {
+            if (text == string.Empty) { return; }
+            statusTextBox.invokeEx(stb => stb.Text = CRLF + text);
         }
         private void clientConnectedButtonState()
         {
@@ -202,7 +229,7 @@ namespace Client
             disconnectButton.Enabled = true;
             sendCommandButton.Enabled = true;
         }
-        private void clientDisonnectedButtonState()
+        private void clientDisconnectedButtonState()
         {
             connectButton.Enabled = true;
             disconnectButton.Enabled = false;
