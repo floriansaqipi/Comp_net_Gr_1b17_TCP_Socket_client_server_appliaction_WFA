@@ -1,4 +1,5 @@
 using Client.Utils;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 
@@ -9,13 +10,14 @@ namespace Server
         //TODO: clean up handling errors
         //constants
         private const string CRLF = "\r\n";
+        private const string FILES_PATH = "server_files/";
 
         //fields
         private List<TcpClient> clientList = new List<TcpClient>();
         private TcpListener listener;
         private int clientCount = 0;
         private bool keepWaiting;
-        private IPAddress ipAddress = IPAddress.Parse("192.168.100.25");
+        private IPAddress ipAddress = IPAddress.Parse("127.0.0.1");
         private int port = 5000;
 
         public ServerForm()
@@ -88,6 +90,7 @@ namespace Server
                 handleException("Problem sending commands to clients...", ex);
             }
             clientCommandTextBox.Text = string.Empty;
+            displayToTextBox("Broadcasting command: " + clientCommandTextBox.Text);
         }
         #endregion Event Handlers
 
@@ -124,7 +127,7 @@ namespace Server
             TcpClient client = (TcpClient) tcpClient;
             clientList.Add(client);
             clientCount++;
-            connectedClientsTextBox.invokeEx(cctx => cctx.Text = client.ToString());
+            connectedClientsTextBox.invokeEx(cctx => cctx.Text = clientCount.ToString());
             
             string input = string.Empty;
 
@@ -138,6 +141,41 @@ namespace Server
                     input = reader.ReadLine(); //blocks until it receives something from the client
                     switch (input)
                     {
+                        case "CREATE_FILE":
+                            {
+                                string fileName = reader.ReadLine();
+                                createFile(input, fileName, writer, client);
+                                break;
+                            }
+                        case "DELETE_FILE":
+                            {
+                                string fileName = reader.ReadLine();
+                                deleteFile(input, fileName, writer, client);
+                                break;
+                            }
+                        case "GET_FILE_LIST":
+                            {
+                                sendFileList(input, writer, client);
+                                break;
+                            }
+                        case "GET_FILE_CONTENT":
+                            {
+                                string fileName = reader.ReadLine();
+                                sendFileContent(input, fileName, writer, client);
+                                break;
+                            }
+                        case "WRITE_FILE_CONTENT":
+                            {
+                                string fileName = reader.ReadLine();
+                                writeFileContent(input, fileName, writer, reader, client);
+                                break;
+                            }
+                        case "EXECUTE_FILE":
+                            {
+                                string fileName = reader.ReadLine();
+                                executeFile(input, fileName, writer, client);
+                                break;
+                            }
                         default:
                             {
                                 displayToTextBoxInvoke("From client: " + client.GetHashCode() + ": " + input);
@@ -152,7 +190,7 @@ namespace Server
             } 
             catch (Exception ex)
             {
-                handleExceptionInvoke("Problem processing client requests!", ex);
+                handleExceptionInvoke("Client disconnected from server!", ex);
             }
             clientList.Remove(client);
             clientCount--;
@@ -162,6 +200,173 @@ namespace Server
             if (clientCount == 0)
             {
                 sendCommandButton.invokeEx(scb => scb.Enabled = false);
+            }
+        }
+
+        private void createFile(string input, string fileName, StreamWriter clientResWriter, TcpClient client)
+        {
+            try
+            {
+
+                displayToTextBoxInvoke("From client " + client.GetHashCode() + ": " + input + " " + fileName);
+                clientResWriter.WriteLine("Server received: " + input + " " + fileName);
+                clientResWriter.Flush();
+                StreamWriter writer = new StreamWriter(FILES_PATH + fileName);
+                clientResWriter.WriteLine("Server created file: " + fileName);
+                clientResWriter.Flush();
+                writer.Close();
+            }
+            catch (IOException ioEx)
+            {
+                handleExceptionInvoke("Problem creating file: " + fileName, ioEx);
+                clientResWriter.WriteLine("File : " + input + "could not be created");
+                clientResWriter.Flush();
+            }
+        }
+
+        private void deleteFile(string input, string fileName, StreamWriter clientResWriter, TcpClient client)
+        {
+            try
+            {
+                displayToTextBoxInvoke( "From client " + client.GetHashCode() + ": " + input + " " + fileName);
+                clientResWriter.WriteLine("Server received: " + input + " " + fileName);
+                clientResWriter.Flush();
+
+                if (!File.Exists(FILES_PATH + fileName))
+                {
+                    clientResWriter.WriteLine("File: " + fileName + " can not be deleted, it does not exist!");
+                    clientResWriter.Flush();
+                    return;
+                }
+                File.Delete(FILES_PATH + fileName);
+                clientResWriter.WriteLine("Server deleted file: " + fileName);
+                clientResWriter.Flush();
+            }
+            catch (IOException ioEx)
+            {
+                handleExceptionInvoke("Problem deleting file: " + fileName,ioEx);
+                clientResWriter.WriteLine("File : " + input + "could not be deleted");
+                clientResWriter.Flush();
+            }
+        }
+
+        private void sendFileList(string input, StreamWriter clientResWriter, TcpClient client)
+        {
+            try
+            {
+                displayToTextBoxInvoke("From client " + client.GetHashCode() + ": " + input);
+                clientResWriter.WriteLine("Server received: " + input);
+                clientResWriter.Flush();
+
+                string[] files = Directory.GetFiles(FILES_PATH);
+
+                clientResWriter.WriteLine("FILES_LIST_RES");
+                clientResWriter.Flush();
+                foreach (string file in files)
+                {
+                    clientResWriter.WriteLine(Path.GetFileName(file));
+                    clientResWriter.Flush();
+                }
+                clientResWriter.WriteLine("END_OF_LIST");
+                clientResWriter.Flush();
+            }
+            catch (Exception ex)
+            {
+                handleExceptionInvoke("Problem fetching files",ex);
+                clientResWriter.WriteLine("Files could not be fetched");
+                clientResWriter.Flush();
+            }
+        }
+
+        private void sendFileContent(string input, string fileName, StreamWriter clientResWriter, TcpClient client)
+        {
+            try
+            {
+                displayToTextBoxInvoke("From client " + client.GetHashCode() + ": " + input);
+                clientResWriter.WriteLine("Server received: " + input);
+                clientResWriter.Flush();
+
+                clientResWriter.WriteLine("FILE_CONTENT_RES");
+                clientResWriter.Flush();
+                clientResWriter.WriteLine(fileName);
+                clientResWriter.Flush();
+
+                StreamReader reader = new StreamReader(FILES_PATH + fileName);
+
+                string line = string.Empty;
+                while ((line = reader.ReadLine()) != null)
+                {
+                    clientResWriter.WriteLine(line);
+                    clientResWriter.Flush();
+                }
+                clientResWriter.WriteLine("END_OF_FILE");
+                clientResWriter.Flush();
+                reader.Close();
+
+            }
+            catch (Exception ex)
+            {
+                handleExceptionInvoke("Problem fetching file content", ex);
+                clientResWriter.WriteLine("File content could not be fetched");
+                clientResWriter.Flush();
+            }
+        }
+
+        private void writeFileContent(string input, string fileName, StreamWriter clientResWriter, StreamReader clientReqReader, TcpClient client)
+        {
+            try
+            {
+                StreamWriter writer = new StreamWriter(FILES_PATH + fileName);
+                displayToTextBoxInvoke( "From client " + client.GetHashCode() + ": " + input + " " + fileName);
+                clientResWriter.WriteLine("Server received: " + input + " " + fileName);
+                clientResWriter.Flush();
+
+                string line = string.Empty;
+                while ((line = clientReqReader.ReadLine()) != "END_OF_FILE")
+                {
+                    writer.WriteLine(line);
+                    writer.Flush();
+                }
+                clientResWriter.WriteLine("Server updated file : " + fileName);
+                clientResWriter.Flush();
+                writer.Close();
+            }
+            catch (IOException ioEx)
+            {
+                handleExceptionInvoke("Problem creating file: " + fileName, ioEx);
+                clientResWriter.WriteLine("File : " + input + "could not be written to.");
+                clientResWriter.Flush();
+
+            }
+        }
+
+        private void executeFile(string input, string fileName, StreamWriter clientResWriter, TcpClient client)
+        {
+            try
+            {
+
+                displayToTextBoxInvoke("From client " + client.GetHashCode() + ": " + input + " " + fileName);
+                clientResWriter.WriteLine("Server received: " + input + " " + fileName);
+                clientResWriter.Flush();
+
+
+                ProcessStartInfo processStartInfo = new ProcessStartInfo
+                {
+                    FileName = "server_files\\" + fileName,
+                    UseShellExecute = true,
+                };
+                Process.Start(processStartInfo);
+
+                clientResWriter.WriteLine("Server executed file: " + fileName);
+                clientResWriter.Flush();
+            }
+            catch (Exception ex)
+            {
+                handleExceptionInvoke("Problem creating file: " + fileName, ex);
+
+                clientResWriter.WriteLine("File : " + input + "could not be executed");
+                clientResWriter.Flush();
+
             }
         }
 

@@ -11,9 +11,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Client
+namespace PrivilegedClient
 {
-    public partial class ClientForm : Form
+    public partial class PrivilegedClientForm : Form
     {
         // Constants
         private const string CRLF = "\r\n";
@@ -25,8 +25,12 @@ namespace Client
         private int port;
         private TcpClient client;
 
+        //Forms
+        private FileExplorerForm fileExplorerForm = new FileExplorerForm();
+        private SimpleTextEditorForm simpleTextEditorForm = new SimpleTextEditorForm();
 
-        public ClientForm()
+
+        public PrivilegedClientForm()
         {
             InitializeComponent();
             serverIpAddress = getIPAddress(ipAddressTextBox.Text);
@@ -54,7 +58,7 @@ namespace Client
             }
             catch (Exception ex)
             {
-                handleException("Problem connecting to the server.",ex);
+                handleException("Problem connecting to the server.", ex);
                 displayToTextBox("No server is found at that IP listening to that port");
             }
         }
@@ -75,6 +79,67 @@ namespace Client
                     writer.Flush();
                     displayToTextBox("Command sent to server: " + commandTextBox.Text);
                     commandTextBox.Text = string.Empty;
+                }
+            }
+            catch (Exception ex)
+            {
+                handleException("Problem sending command to the server!", ex);
+            }
+        }
+
+        private void createFileButtonHandler(object sender, EventArgs e)
+        {
+            try
+            {
+                if (client.Connected)
+                {
+                    StreamWriter writer = new StreamWriter(client.GetStream());
+                    writer.WriteLine("CREATE_FILE");
+                    writer.Flush();
+                    writer.WriteLine(createFileNameTextBox.Text);
+                    writer.Flush();
+                    displayToTextBox("Create file req sent to the server. File Name: " + createFileNameTextBox.Text);
+                    createFileNameTextBox.Text = string.Empty;
+                }
+            }
+            catch (Exception ex)
+            {
+                handleException("Problem sending command to the server!", ex);
+            }
+        }
+
+        private void deleteFileButtonHandler(object sender, EventArgs e)
+        {
+            try
+            {
+                if (client.Connected)
+                {
+                    StreamWriter writer = new StreamWriter(client.GetStream());
+                    writer.WriteLine("DELETE_FILE");
+                    writer.Flush();
+                    writer.WriteLine(deleteFileNameTextBox.Text);
+                    writer.Flush();
+                    displayToTextBox("Delete file req sent to the server. File Name:" + commandTextBox.Text);
+                    deleteFileNameTextBox.Text = string.Empty;
+                }
+            }
+            catch (Exception ex)
+            {
+                handleException("Problem sending command to the server!",ex);
+            }
+        }
+
+        private void fileExplorerButtonHandler(object sender, EventArgs e)
+        {
+            try
+            {
+                if (client.Connected)
+                {
+                    StreamWriter writer = new StreamWriter(client.GetStream());
+                    writer.WriteLine("GET_FILE_LIST");
+                    writer.Flush();
+                    displayToTextBox("File list req sent to the server.");
+
                 }
             }
             catch (Exception ex)
@@ -112,7 +177,17 @@ namespace Client
                     {
                         switch (input)
                         {
-
+                            case "FILES_LIST_RES":
+                                {
+                                    getFiles(input, reader);
+                                    break;
+                                }
+                            case "FILE_CONTENT_RES":
+                                {
+                                    string fileName = reader.ReadLine();
+                                    getFileContent(input, fileName, reader);
+                                    break;
+                                }
                             default:
                                 {
                                     displayToTextBoxInvoke(" Received from Server: " + input);
@@ -125,7 +200,7 @@ namespace Client
             }
             catch (Exception ex)
             {
-                handleExceptionInvoke("Problem communicating with the server. Connection may have been intentionally disconnected.",ex);
+                handleExceptionInvoke("Problem communicating with the server. Connection may have been intentionally disconnected.", ex);
             }
             disconnectButton.invokeEx(dcb => dcb.Enabled = false);
             connectButton.invokeEx(cb => cb.Enabled = true);
@@ -143,18 +218,65 @@ namespace Client
                 disconnectButton.invokeEx(db => db.Enabled = false);
                 connectButton.invokeEx(cb => cb.Enabled = true);
                 sendCommandButton.invokeEx(scb => scb.Enabled = false);
+                createFileButton.invokeEx(cb => cb.Enabled = false);
+                deleteFileButton.invokeEx(db => db.Enabled = false);
+                fileExplorerButton.invokeEx(feb => feb.Enabled = false);
 
             }
             catch (Exception ex)
             {
-                handleExceptionInvoke("Problem disconnecting from the server.",ex);
+                handleExceptionInvoke("Problem disconnecting from the server.", ex);
 
             }
         }
 
+        private void getFiles(string input, StreamReader reader)
+        {
+            try
+            {
+                List<string> files = new List<string>();
+                string currentFile = string.Empty;
+                while ((currentFile = reader.ReadLine()) != "END_OF_LIST")
+                {
+                    files.Add(currentFile);
+                }
+                displayToTextBoxInvoke("Received from Server: " + input);
+                displayToTextBoxInvoke("Received " + files.Count + " files from server.");
+                fileExplorerForm.Files = files;
+                fileExplorerForm.Client = client;
+                fileExplorerForm.StatusTextBox = statusTextBox;
+                fileExplorerForm.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                handleExceptionInvoke("Problem getting files from server.",ex);
+            }
+        }
 
-       
+        private void getFileContent(string input, string fileName, StreamReader reader)
+        {
+            try
+            {
+                List<string> fileLines = new List<string>();
+                string line = string.Empty;
+                while ((line = reader.ReadLine()) != "END_OF_FILE")
+                {
+                    fileLines.Add(line);
+                }
+                displayToTextBoxInvoke(" Received from Server: " + input);
 
+                simpleTextEditorForm.FileLines = fileLines;
+                simpleTextEditorForm.FileName = fileName;
+                simpleTextEditorForm.StatusTextBox = statusTextBox;
+                simpleTextEditorForm.Client = client;
+                displayToTextBoxInvoke(" Received file: " + fileName + " content from server.");
+                simpleTextEditorForm.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                statusTextBox.invokeEx(stb => stb.Text += CRLF + "Problem getting files from server.");
+            }
+        }
 
         #region Utility methods
 
@@ -172,13 +294,13 @@ namespace Client
             }
             catch (Exception ex)
             {
-                handleException("Invalid IP address - Client will connect to: " + address.ToString(),ex);
+                handleException("Invalid IP address - Client will connect to: " + address.ToString(), ex);
             }
 
             return address;
         }
 
-       
+
         private int getPort(string serverPort)
         {
             int port = DEFAULT_PORT;
@@ -231,14 +353,18 @@ namespace Client
             connectButton.Enabled = false;
             disconnectButton.Enabled = true;
             sendCommandButton.Enabled = true;
+            createFileButton.Enabled = true;
+            deleteFileButton.Enabled = true;
+            fileExplorerButton.Enabled = true;
         }
         private void clientDisconnectedButtonState()
         {
             connectButton.Enabled = true;
             disconnectButton.Enabled = false;
             sendCommandButton.Enabled = false;
+            createFileButton.Enabled = false;
+            deleteFileButton.Enabled = false;
+            fileExplorerButton.Enabled = false;
         }
-
-       
     }
 }
