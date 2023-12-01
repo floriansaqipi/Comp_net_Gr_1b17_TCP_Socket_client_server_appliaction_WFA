@@ -31,10 +31,10 @@
             tableLayoutPanel1 = new TableLayoutPanel();
             tableLayoutPanel2 = new TableLayoutPanel();
             disconnectButton = new Button();
-            IPAddressTextBox = new TextBox();
-            PortTextBox = new TextBox();
-            IPAddress = new Label();
-            PortLabel = new Label();
+            ipAddressTextBox = new TextBox();
+            portTextBox = new TextBox();
+            ipAddressLabel = new Label();
+            portLabel = new Label();
             connectButton = new Button();
             tableLayoutPanel3 = new TableLayoutPanel();
             sendCommandButton = new Button();
@@ -68,10 +68,10 @@
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tableLayoutPanel2.Controls.Add(disconnectButton, 0, 3);
-            tableLayoutPanel2.Controls.Add(IPAddressTextBox, 1, 1);
-            tableLayoutPanel2.Controls.Add(PortTextBox, 1, 2);
-            tableLayoutPanel2.Controls.Add(IPAddress, 0, 1);
-            tableLayoutPanel2.Controls.Add(PortLabel, 0, 2);
+            tableLayoutPanel2.Controls.Add(ipAddressTextBox, 1, 1);
+            tableLayoutPanel2.Controls.Add(portTextBox, 1, 2);
+            tableLayoutPanel2.Controls.Add(ipAddressLabel, 0, 1);
+            tableLayoutPanel2.Controls.Add(portLabel, 0, 2);
             tableLayoutPanel2.Controls.Add(connectButton, 1, 3);
             tableLayoutPanel2.Dock = DockStyle.Fill;
             tableLayoutPanel2.Location = new Point(483, 207);
@@ -93,49 +93,49 @@
             disconnectButton.TabIndex = 1;
             disconnectButton.Text = "Disconnect";
             disconnectButton.UseVisualStyleBackColor = true;
-            disconnectButton.Click += connectButtonHandler;
+            disconnectButton.Click += disconnectButtonHandler;
             // 
-            // IPAddressTextBox
+            // ipAddressTextBox
             // 
-            IPAddressTextBox.Dock = DockStyle.Fill;
-            IPAddressTextBox.Location = new Point(160, 97);
-            IPAddressTextBox.Name = "IPAddressTextBox";
-            IPAddressTextBox.Size = new Size(151, 23);
-            IPAddressTextBox.TabIndex = 4;
-            IPAddressTextBox.Text = "127.0.0.1";
-            IPAddressTextBox.TextAlign = HorizontalAlignment.Center;
+            ipAddressTextBox.Dock = DockStyle.Fill;
+            ipAddressTextBox.Location = new Point(160, 97);
+            ipAddressTextBox.Name = "ipAddressTextBox";
+            ipAddressTextBox.Size = new Size(151, 23);
+            ipAddressTextBox.TabIndex = 4;
+            ipAddressTextBox.Text = "127.0.0.1";
+            ipAddressTextBox.TextAlign = HorizontalAlignment.Center;
             // 
-            // PortTextBox
+            // portTextBox
             // 
-            PortTextBox.Dock = DockStyle.Fill;
-            PortTextBox.Location = new Point(160, 128);
-            PortTextBox.Name = "PortTextBox";
-            PortTextBox.Size = new Size(151, 23);
-            PortTextBox.TabIndex = 5;
-            PortTextBox.Text = "5000";
-            PortTextBox.TextAlign = HorizontalAlignment.Center;
+            portTextBox.Dock = DockStyle.Fill;
+            portTextBox.Location = new Point(160, 128);
+            portTextBox.Name = "portTextBox";
+            portTextBox.Size = new Size(151, 23);
+            portTextBox.TabIndex = 5;
+            portTextBox.Text = "5000";
+            portTextBox.TextAlign = HorizontalAlignment.Center;
             // 
-            // IPAddress
+            // ipAddressLabel
             // 
-            IPAddress.AutoSize = true;
-            IPAddress.Dock = DockStyle.Fill;
-            IPAddress.Location = new Point(3, 94);
-            IPAddress.Name = "IPAddress";
-            IPAddress.Size = new Size(151, 31);
-            IPAddress.TabIndex = 2;
-            IPAddress.Text = "IP Address:";
-            IPAddress.TextAlign = ContentAlignment.MiddleRight;
+            ipAddressLabel.AutoSize = true;
+            ipAddressLabel.Dock = DockStyle.Fill;
+            ipAddressLabel.Location = new Point(3, 94);
+            ipAddressLabel.Name = "ipAddressLabel";
+            ipAddressLabel.Size = new Size(151, 31);
+            ipAddressLabel.TabIndex = 2;
+            ipAddressLabel.Text = "IP Address:";
+            ipAddressLabel.TextAlign = ContentAlignment.MiddleRight;
             // 
-            // PortLabel
+            // portLabel
             // 
-            PortLabel.AutoSize = true;
-            PortLabel.Dock = DockStyle.Fill;
-            PortLabel.Location = new Point(3, 125);
-            PortLabel.Name = "PortLabel";
-            PortLabel.Size = new Size(151, 32);
-            PortLabel.TabIndex = 3;
-            PortLabel.Text = "Port:";
-            PortLabel.TextAlign = ContentAlignment.MiddleRight;
+            portLabel.AutoSize = true;
+            portLabel.Dock = DockStyle.Fill;
+            portLabel.Location = new Point(3, 125);
+            portLabel.Name = "portLabel";
+            portLabel.Size = new Size(151, 32);
+            portLabel.TabIndex = 3;
+            portLabel.Text = "Port:";
+            portLabel.TextAlign = ContentAlignment.MiddleRight;
             // 
             // connectButton
             // 
@@ -222,10 +222,10 @@
         private TextBox statusTextBox;
         private Button connectButton;
         private Button disconnectButton;
-        private Label IPAddress;
-        private Label PortLabel;
-        private TextBox IPAddressTextBox;
-        private TextBox PortTextBox;
+        private Label ipAddressLabel;
+        private Label portLabel;
+        private TextBox ipAddressTextBox;
+        private TextBox portTextBox;
         private Button sendCommandButton;
         private TextBox commandTextBox;
     }

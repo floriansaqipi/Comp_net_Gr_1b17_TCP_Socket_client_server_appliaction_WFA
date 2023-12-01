@@ -53,12 +53,13 @@
             tableLayoutPanel1.Controls.Add(tableLayoutPanel2, 1, 0);
             tableLayoutPanel1.Controls.Add(tableLayoutPanel3, 1, 1);
             tableLayoutPanel1.Controls.Add(statusTextBox, 0, 0);
-            tableLayoutPanel1.Location = new Point(2, 1);
+            tableLayoutPanel1.Dock = DockStyle.Fill;
+            tableLayoutPanel1.Location = new Point(0, 0);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 2;
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel1.Size = new Size(796, 426);
+            tableLayoutPanel1.Size = new Size(800, 428);
             tableLayoutPanel1.TabIndex = 0;
             // 
             // tableLayoutPanel2
@@ -71,14 +72,14 @@
             tableLayoutPanel2.Controls.Add(sendCommandButton, 1, 3);
             tableLayoutPanel2.Controls.Add(clientCommandTextBox, 0, 2);
             tableLayoutPanel2.Dock = DockStyle.Fill;
-            tableLayoutPanel2.Location = new Point(504, 3);
+            tableLayoutPanel2.Location = new Point(506, 3);
             tableLayoutPanel2.Name = "tableLayoutPanel2";
             tableLayoutPanel2.RowCount = 4;
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 26.2135925F));
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 73.78641F));
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Absolute, 70F));
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Absolute, 33F));
-            tableLayoutPanel2.Size = new Size(289, 207);
+            tableLayoutPanel2.Size = new Size(291, 208);
             tableLayoutPanel2.TabIndex = 0;
             // 
             // labelConnectedClients
@@ -87,7 +88,7 @@
             labelConnectedClients.Dock = DockStyle.Fill;
             labelConnectedClients.Location = new Point(3, 0);
             labelConnectedClients.Name = "labelConnectedClients";
-            labelConnectedClients.Size = new Size(139, 27);
+            labelConnectedClients.Size = new Size(140, 27);
             labelConnectedClients.TabIndex = 0;
             labelConnectedClients.Text = "Connected Clients:";
             labelConnectedClients.TextAlign = ContentAlignment.MiddleRight;
@@ -95,9 +96,10 @@
             // connectedClientsTextBox
             // 
             connectedClientsTextBox.Dock = DockStyle.Fill;
-            connectedClientsTextBox.Location = new Point(148, 3);
+            connectedClientsTextBox.Location = new Point(149, 3);
             connectedClientsTextBox.Name = "connectedClientsTextBox";
-            connectedClientsTextBox.Size = new Size(138, 23);
+            connectedClientsTextBox.ReadOnly = true;
+            connectedClientsTextBox.Size = new Size(139, 23);
             connectedClientsTextBox.TabIndex = 1;
             connectedClientsTextBox.Text = "0";
             connectedClientsTextBox.TextAlign = HorizontalAlignment.Center;
@@ -105,9 +107,9 @@
             // sendCommandButton
             // 
             sendCommandButton.Dock = DockStyle.Fill;
-            sendCommandButton.Location = new Point(148, 176);
+            sendCommandButton.Location = new Point(149, 177);
             sendCommandButton.Name = "sendCommandButton";
-            sendCommandButton.Size = new Size(138, 28);
+            sendCommandButton.Size = new Size(139, 28);
             sendCommandButton.TabIndex = 2;
             sendCommandButton.Text = "Send Command";
             sendCommandButton.UseVisualStyleBackColor = true;
@@ -117,10 +119,10 @@
             // 
             tableLayoutPanel2.SetColumnSpan(clientCommandTextBox, 2);
             clientCommandTextBox.Dock = DockStyle.Fill;
-            clientCommandTextBox.Location = new Point(3, 106);
+            clientCommandTextBox.Location = new Point(3, 107);
             clientCommandTextBox.Multiline = true;
             clientCommandTextBox.Name = "clientCommandTextBox";
-            clientCommandTextBox.Size = new Size(283, 64);
+            clientCommandTextBox.Size = new Size(285, 64);
             clientCommandTextBox.TabIndex = 3;
             // 
             // tableLayoutPanel3
@@ -133,21 +135,21 @@
             tableLayoutPanel3.Controls.Add(portLabel, 0, 1);
             tableLayoutPanel3.Controls.Add(portTextBox, 1, 1);
             tableLayoutPanel3.Dock = DockStyle.Fill;
-            tableLayoutPanel3.Location = new Point(504, 216);
+            tableLayoutPanel3.Location = new Point(506, 217);
             tableLayoutPanel3.Name = "tableLayoutPanel3";
             tableLayoutPanel3.RowCount = 3;
             tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Percent, 83.435585F));
             tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Percent, 16.5644169F));
             tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Absolute, 43F));
-            tableLayoutPanel3.Size = new Size(289, 207);
+            tableLayoutPanel3.Size = new Size(291, 208);
             tableLayoutPanel3.TabIndex = 1;
             // 
             // startServerButton
             // 
             startServerButton.Dock = DockStyle.Fill;
-            startServerButton.Location = new Point(147, 166);
+            startServerButton.Location = new Point(148, 167);
             startServerButton.Name = "startServerButton";
-            startServerButton.Size = new Size(139, 38);
+            startServerButton.Size = new Size(140, 38);
             startServerButton.TabIndex = 0;
             startServerButton.Text = "Start Server";
             startServerButton.UseVisualStyleBackColor = true;
@@ -156,9 +158,9 @@
             // stopServerButton
             // 
             stopServerButton.Dock = DockStyle.Fill;
-            stopServerButton.Location = new Point(3, 166);
+            stopServerButton.Location = new Point(3, 167);
             stopServerButton.Name = "stopServerButton";
-            stopServerButton.Size = new Size(138, 38);
+            stopServerButton.Size = new Size(139, 38);
             stopServerButton.TabIndex = 1;
             stopServerButton.Text = "Stop Server";
             stopServerButton.UseVisualStyleBackColor = true;
@@ -168,9 +170,9 @@
             // 
             portLabel.AutoSize = true;
             portLabel.Dock = DockStyle.Fill;
-            portLabel.Location = new Point(3, 136);
+            portLabel.Location = new Point(3, 137);
             portLabel.Name = "portLabel";
-            portLabel.Size = new Size(138, 27);
+            portLabel.Size = new Size(139, 27);
             portLabel.TabIndex = 2;
             portLabel.Text = "Listen on port:";
             portLabel.TextAlign = ContentAlignment.MiddleRight;
@@ -178,9 +180,9 @@
             // portTextBox
             // 
             portTextBox.Dock = DockStyle.Fill;
-            portTextBox.Location = new Point(147, 139);
+            portTextBox.Location = new Point(148, 140);
             portTextBox.Name = "portTextBox";
-            portTextBox.Size = new Size(139, 23);
+            portTextBox.Size = new Size(140, 23);
             portTextBox.TabIndex = 3;
             portTextBox.Text = "5000";
             portTextBox.TextAlign = HorizontalAlignment.Center;
@@ -194,14 +196,14 @@
             statusTextBox.ReadOnly = true;
             tableLayoutPanel1.SetRowSpan(statusTextBox, 2);
             statusTextBox.ScrollBars = ScrollBars.Vertical;
-            statusTextBox.Size = new Size(495, 420);
+            statusTextBox.Size = new Size(497, 422);
             statusTextBox.TabIndex = 2;
             // 
             // ServerForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(800, 428);
             Controls.Add(tableLayoutPanel1);
             Name = "ServerForm";
             Text = "WinForm Server";
