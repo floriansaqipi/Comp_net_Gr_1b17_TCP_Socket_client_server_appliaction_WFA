@@ -122,7 +122,7 @@ namespace Client
                 writer = new StreamWriter(client.GetStream());
 
                 // Say Hello to the server once we connect...
-                writer.WriteLine("Hello from a client! Ready to do your bidding!");
+                writer.WriteLine("Hello from a client!");
                 writer.Flush();
 
                 while (client.Connected)
