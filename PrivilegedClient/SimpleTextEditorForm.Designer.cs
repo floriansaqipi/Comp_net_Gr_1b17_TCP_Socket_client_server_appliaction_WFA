@@ -106,14 +106,12 @@
             fontToolStripMenuItem1.Name = "fontToolStripMenuItem1";
             fontToolStripMenuItem1.Size = new Size(180, 22);
             fontToolStripMenuItem1.Text = "Font";
-            fontToolStripMenuItem1.Click += fontMenuItemClickHandler;
             // 
             // colorToolStripMenuItem
             // 
             colorToolStripMenuItem.Name = "colorToolStripMenuItem";
             colorToolStripMenuItem.Size = new Size(180, 22);
             colorToolStripMenuItem.Text = "Color";
-            colorToolStripMenuItem.Click += colorMenuItemClickHandler;
             // 
             // fileContentRichTextBox
             // 

@@ -55,81 +55,30 @@ namespace PrivilegedClient
                     }
                     writer.WriteLine("END_OF_FILE");
                     writer.Flush();
-                    displayToTextBoxInvoke("Requested write content for file : " + fileName);
+                    displayToTextBox("Requested write content for file : " + fileName);
                     this.Close();
                 }
             }
             catch (Exception ex)
             {
-                handleExceptionInvoke("Problem sending command to the server!", ex);
+                handleException("Problem sending command to the server!", ex);
 
             }
         }
 
-        private void undoMenuItemClickHandler(object sender, EventArgs e)
-        {
-            fileContentRichTextBox.invokeEx(fcrtb => fcrtb.Undo());
-        }
-
-        private void redoMenuItemClickHandler(object sender, EventArgs e)
-        {
-            fileContentRichTextBox.invokeEx(fcrtb => fcrtb.Redo());
-        }
-
-        private void cutMenuItemClickHandler(object sender, EventArgs e)
-        {
-            fileContentRichTextBox.invokeEx(fcrtb => fcrtb.Cut());
-        }
-
-        private void copyMenuItemClickHandler(object sender, EventArgs e)
-        {
-            fileContentRichTextBox.invokeEx(fcrtb => fcrtb.Copy());
-        }
-
-        private void pasteMenuItemClickHandler(object sender, EventArgs e)
-        {
-            fileContentRichTextBox.invokeEx(fcrtb => fcrtb.Paste());
-        }
-
-        private void selectAllMenuItemClickHandler(object sender, EventArgs e)
-        {
-            fileContentRichTextBox.invokeEx(fcrtb => fcrtb.SelectAll());
-        }
-
-        private void fontMenuItemClickHandler(object sender, EventArgs e)
-        {
-            //fontDialog.ShowDialog();
-            fileContentRichTextBox.invokeEx(fcrtb => fcrtb.SelectionFont = fontDialog.Font);
-        }
-
-        private void colorMenuItemClickHandler(object sender, EventArgs e)
-        {
-            //colorDialog.ShowDialog();
-            fileContentRichTextBox.invokeEx(fcrtb => fcrtb.SelectionColor = colorDialog.Color);
-        }
-
+       
         private void handleException(string message, Exception ex)
         {
             displayToTextBox(message);
             Console.WriteLine(ex.Message);
         }
 
-        private void handleExceptionInvoke(string message, Exception ex)
-        {
-            displayToTextBoxInvoke(message);
-            Console.WriteLine(ex.Message);
-        }
         private void displayToTextBox(string text)
         {
             if (text == string.Empty) { return; }
             statusTextBox.Text += CRLF + text;
         }
 
-        private void displayToTextBoxInvoke(string text)
-        {
-            if (text == string.Empty) { return; }
-            statusTextBox.invokeEx(stb => stb.Text += CRLF + text);
-        }
 
 
         public List<string> FileLines

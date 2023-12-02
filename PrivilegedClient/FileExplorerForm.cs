@@ -49,13 +49,13 @@ namespace PrivilegedClient
                     writer.Flush();
                     writer.WriteLine(currentFile);
                     writer.Flush();
-                    displayToTextBoxInvoke("Requested content for file : " + currentFile);
+                    displayToTextBox("Requested content for file : " + currentFile);
                     this.Close();
                 }
             }
             catch (Exception ex)
             {
-                handleExceptionInvoke("Problem sending command to the server!", ex);
+                handleException("Problem sending command to the server!", ex);
             }
         }
 
@@ -104,22 +104,10 @@ namespace PrivilegedClient
             displayToTextBox(message);
             Console.WriteLine(ex.Message);
         }
-
-        private void handleExceptionInvoke(string message, Exception ex)
-        {
-            displayToTextBoxInvoke(message);
-            Console.WriteLine(ex.Message);
-        }
         private void displayToTextBox(string text)
         {
             if (text == string.Empty) { return; }
             statusTextBox.Text += CRLF + text;
-        }
-
-        private void displayToTextBoxInvoke(string text)
-        {
-            if (text == string.Empty) { return; }
-            statusTextBox.invokeEx(stb => stb.Text += CRLF + text);
         }
 
         public TcpClient Client
