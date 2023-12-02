@@ -7,7 +7,6 @@ namespace Server
 {
     public partial class ServerForm : Form
     {
-        //TODO: clean up handling errors
         //constants
         private const string CRLF = "\r\n";
         private const string FILES_PATH = "server_files/";
@@ -30,8 +29,12 @@ namespace Server
         private void startServerButtonHandler(object sender, EventArgs e)
         {
             try
-            {
-                if(!Int32.TryParse(portTextBox.Text, out port)
+            {   if(portTextBox.Text == string.Empty)
+                {
+                    port = 5000;
+                    displayToTextBox("You entered no port number using port: " + port);
+                }
+                else if(!Int32.TryParse(portTextBox.Text, out port)
                     || Int32.Parse(portTextBox.Text) < 1024
                     || Int32.Parse(portTextBox.Text) > 65536)
                 {
@@ -76,6 +79,11 @@ namespace Server
 
         private void sendCommandButtonHandler(object sender, EventArgs e)
         {
+            if(clientCommandTextBox.Text == string.Empty)
+            {
+                displayToTextBox("Can not send empty string as a command.");
+                return;
+            }
             try
             {
                 foreach(TcpClient client in clientList)
@@ -89,8 +97,8 @@ namespace Server
             {
                 handleException("Problem sending commands to clients...", ex);
             }
-            clientCommandTextBox.Text = string.Empty;
             displayToTextBox("Broadcasting command: " + clientCommandTextBox.Text);
+            clientCommandTextBox.Text = string.Empty;
         }
         #endregion Event Handlers
 
