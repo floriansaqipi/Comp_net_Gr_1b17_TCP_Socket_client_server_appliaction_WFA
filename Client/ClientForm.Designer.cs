@@ -37,6 +37,7 @@
             portLabel = new Label();
             connectButton = new Button();
             tableLayoutPanel3 = new TableLayoutPanel();
+            fileExplorerButton = new Button();
             sendCommandButton = new Button();
             commandTextBox = new TextBox();
             statusTextBox = new TextBox();
@@ -153,24 +154,38 @@
             tableLayoutPanel3.ColumnCount = 2;
             tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableLayoutPanel3.Controls.Add(fileExplorerButton, 0, 3);
             tableLayoutPanel3.Controls.Add(sendCommandButton, 1, 2);
             tableLayoutPanel3.Controls.Add(commandTextBox, 0, 1);
             tableLayoutPanel3.Dock = DockStyle.Fill;
             tableLayoutPanel3.Location = new Point(483, 3);
             tableLayoutPanel3.Name = "tableLayoutPanel3";
-            tableLayoutPanel3.RowCount = 3;
-            tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Percent, 47.7419357F));
-            tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Percent, 52.2580643F));
-            tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Absolute, 38F));
+            tableLayoutPanel3.RowCount = 4;
+            tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Percent, 23.6220474F));
+            tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Percent, 76.37795F));
+            tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F));
+            tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Absolute, 42F));
             tableLayoutPanel3.Size = new Size(314, 198);
             tableLayoutPanel3.TabIndex = 1;
+            // 
+            // fileExplorerButton
+            // 
+            tableLayoutPanel3.SetColumnSpan(fileExplorerButton, 2);
+            fileExplorerButton.Dock = DockStyle.Fill;
+            fileExplorerButton.Location = new Point(3, 158);
+            fileExplorerButton.Name = "fileExplorerButton";
+            fileExplorerButton.Size = new Size(308, 37);
+            fileExplorerButton.TabIndex = 1;
+            fileExplorerButton.Text = "Explore Files";
+            fileExplorerButton.UseVisualStyleBackColor = true;
+            fileExplorerButton.Click += fileExplorerButtonHandler;
             // 
             // sendCommandButton
             // 
             sendCommandButton.Dock = DockStyle.Fill;
-            sendCommandButton.Location = new Point(160, 162);
+            sendCommandButton.Location = new Point(160, 123);
             sendCommandButton.Name = "sendCommandButton";
-            sendCommandButton.Size = new Size(151, 33);
+            sendCommandButton.Size = new Size(151, 29);
             sendCommandButton.TabIndex = 1;
             sendCommandButton.Text = "Send Command";
             sendCommandButton.UseVisualStyleBackColor = true;
@@ -180,10 +195,10 @@
             // 
             tableLayoutPanel3.SetColumnSpan(commandTextBox, 2);
             commandTextBox.Dock = DockStyle.Fill;
-            commandTextBox.Location = new Point(3, 79);
+            commandTextBox.Location = new Point(3, 31);
             commandTextBox.Multiline = true;
             commandTextBox.Name = "commandTextBox";
-            commandTextBox.Size = new Size(308, 77);
+            commandTextBox.Size = new Size(308, 86);
             commandTextBox.TabIndex = 2;
             // 
             // statusTextBox
@@ -228,5 +243,6 @@
         private TextBox portTextBox;
         private Button sendCommandButton;
         private TextBox commandTextBox;
+        private Button fileExplorerButton;
     }
 }

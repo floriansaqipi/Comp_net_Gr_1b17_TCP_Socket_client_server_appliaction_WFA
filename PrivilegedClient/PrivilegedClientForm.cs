@@ -41,7 +41,6 @@ namespace PrivilegedClient
 
         #region Event Handlers
 
-        //TODO: Florian Saqipi - implement this 
         private void connectButtonHandler(object sender, EventArgs e)
         {
             try
@@ -63,13 +62,17 @@ namespace PrivilegedClient
             }
         }
 
-        //TODO: Fjolla Ajeti - implement this 
         private void disconnectButtonHandler(object sender, EventArgs e)
         {
             disconnectFromServer();
         }
         private void sendCommandButtonHandler(object sender, EventArgs e)
         {
+            if (commandTextBox.Text == string.Empty)
+            {
+                displayToTextBox("Can not send empty string as a command.");
+                return;
+            }
             try
             {
                 if (client.Connected)
@@ -89,6 +92,11 @@ namespace PrivilegedClient
 
         private void createFileButtonHandler(object sender, EventArgs e)
         {
+            if(createFileNameTextBox.Text == string.Empty)
+            {
+                displayToTextBox("Create file text box can not be empty");
+                return;
+            }
             try
             {
                 if (client.Connected)
@@ -110,6 +118,11 @@ namespace PrivilegedClient
 
         private void deleteFileButtonHandler(object sender, EventArgs e)
         {
+            if (deleteFileNameTextBox.Text == string.Empty)
+            {
+                displayToTextBox("Delete file text box can not be empty");
+                return;
+            }
             try
             {
                 if (client.Connected)
@@ -163,7 +176,7 @@ namespace PrivilegedClient
                 writer = new StreamWriter(client.GetStream());
 
                 // Say Hello to the server once we connect...
-                writer.WriteLine("Hello from a client! Ready to do your bidding!");
+                writer.WriteLine("Hello from a client!");
                 writer.Flush();
 
                 while (client.Connected)
@@ -200,15 +213,12 @@ namespace PrivilegedClient
             }
             catch (Exception ex)
             {
-                handleExceptionInvoke("Problem communicating with the server. Connection may have been intentionally disconnected.", ex);
+                handleExceptionInvoke("Connection has been terminated.", ex);
             }
             disconnectButton.invokeEx(dcb => dcb.Enabled = false);
             connectButton.invokeEx(cb => cb.Enabled = true);
-            //statusTextBox.invokeEx(stb => stb.Text = string.Empty);
-            //add maybe send Command Button to false
         }
 
-        //TODO: Fjolla Ajeti - implement this
         private void disconnectFromServer()
         {
             try
@@ -280,16 +290,19 @@ namespace PrivilegedClient
 
         #region Utility methods
 
-
-        //TODO - Fjolla Ajeti implement this 
         private IPAddress getIPAddress(string ipAddress)
         {
-            IPAddress address = IPAddress.Parse(LOCALHOST);
+            IPAddress address = null;
             try
             {
-                if (!IPAddress.TryParse(ipAddress, out address))
+                if(ipAddress == string.Empty) {
+                    address = IPAddress.Parse(LOCALHOST);
+                    displayToTextBox("No IP address entered - Client will try to connect to: " + address.ToString());
+                }
+                else if (!IPAddress.TryParse(ipAddress, out address))
                 {
                     address = IPAddress.Parse(LOCALHOST);
+                    displayToTextBox("Invalid IP address - Client will try to connect to: " + address.ToString());
                 }
             }
             catch (Exception ex)
@@ -307,12 +320,17 @@ namespace PrivilegedClient
 
             try
             {
-                if (!Int32.TryParse(serverPort, out port)
+                if (portTextBox.Text == string.Empty)
+                {
+                    port = DEFAULT_PORT;
+                    displayToTextBox("You entered no port number using port: " + port);
+                }
+                else if (!Int32.TryParse(serverPort, out port)
                     || Int32.Parse(portTextBox.Text) < 1024
                     || Int32.Parse(portTextBox.Text) > 65536)
                 {
                     port = DEFAULT_PORT;
-                    displayToTextBox("You entered an invalid port number. Using other port");
+                    displayToTextBox("You entered an invalid port number. Using port: " + port);
                 }
             }
             catch (Exception ex)
