@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PrivilegedClient.Utils;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -48,13 +49,13 @@ namespace PrivilegedClient
                     writer.Flush();
                     writer.WriteLine(currentFile);
                     writer.Flush();
-                    displayToTextBox("Requested content for file : " + currentFile);
+                    displayToTextBoxInvoke("Requested content for file : " + currentFile);
                     this.Close();
                 }
             }
             catch (Exception ex)
             {
-                handleException("Problem sending command to the server!", ex);
+                handleExceptionInvoke("Problem sending command to the server!", ex);
             }
         }
 
@@ -104,10 +105,21 @@ namespace PrivilegedClient
             Console.WriteLine(ex.Message);
         }
 
+        private void handleExceptionInvoke(string message, Exception ex)
+        {
+            displayToTextBoxInvoke(message);
+            Console.WriteLine(ex.Message);
+        }
         private void displayToTextBox(string text)
         {
             if (text == string.Empty) { return; }
             statusTextBox.Text += CRLF + text;
+        }
+
+        private void displayToTextBoxInvoke(string text)
+        {
+            if (text == string.Empty) { return; }
+            statusTextBox.invokeEx(stb => stb.Text += CRLF + text);
         }
 
         public TcpClient Client

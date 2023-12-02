@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Client.Utils
+namespace Server.Utils
 {
     public static class InvokeExtensionsSynchroniser
     {

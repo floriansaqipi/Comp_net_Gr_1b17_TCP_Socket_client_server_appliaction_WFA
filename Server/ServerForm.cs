@@ -1,4 +1,4 @@
-using Client.Utils;
+using Server.Utils;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
@@ -16,7 +16,7 @@ namespace Server
         private TcpListener listener;
         private int clientCount = 0;
         private bool keepWaiting;
-        private IPAddress ipAddress = IPAddress.Parse("127.0.0.1");
+        private IPAddress ipAddress = IPAddress.Parse("192.168.0.197");
         private int port = 5000;
 
         public ServerForm()

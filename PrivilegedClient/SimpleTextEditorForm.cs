@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PrivilegedClient.Utils;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -54,56 +55,57 @@ namespace PrivilegedClient
                     }
                     writer.WriteLine("END_OF_FILE");
                     writer.Flush();
-                    displayToTextBox("Requested write content for file : " + fileName);
+                    displayToTextBoxInvoke("Requested write content for file : " + fileName);
                     this.Close();
                 }
             }
             catch (Exception ex)
             {
-                handleException("Problem sending command to the server!", ex);
+                handleExceptionInvoke("Problem sending command to the server!", ex);
 
             }
         }
 
         private void undoMenuItemClickHandler(object sender, EventArgs e)
         {
-            fileContentRichTextBox.Undo();
+            fileContentRichTextBox.invokeEx(fcrtb => fcrtb.Undo());
         }
 
         private void redoMenuItemClickHandler(object sender, EventArgs e)
         {
-            fileContentRichTextBox.Redo();
+            fileContentRichTextBox.invokeEx(fcrtb => fcrtb.Redo());
         }
 
         private void cutMenuItemClickHandler(object sender, EventArgs e)
         {
-            fileContentRichTextBox.Cut();
+            fileContentRichTextBox.invokeEx(fcrtb => fcrtb.Cut());
         }
 
         private void copyMenuItemClickHandler(object sender, EventArgs e)
         {
-            fileContentRichTextBox.Copy();
+            fileContentRichTextBox.invokeEx(fcrtb => fcrtb.Copy());
         }
 
         private void pasteMenuItemClickHandler(object sender, EventArgs e)
         {
-            fileContentRichTextBox.Paste();
+            fileContentRichTextBox.invokeEx(fcrtb => fcrtb.Paste());
         }
 
         private void selectAllMenuItemClickHandler(object sender, EventArgs e)
         {
-            fileContentRichTextBox.SelectAll();
+            fileContentRichTextBox.invokeEx(fcrtb => fcrtb.SelectAll());
         }
 
         private void fontMenuItemClickHandler(object sender, EventArgs e)
         {
-            fontDialog.ShowDialog();
-            fileContentRichTextBox.SelectionFont = fontDialog.Font;
+            //fontDialog.ShowDialog();
+            fileContentRichTextBox.invokeEx(fcrtb => fcrtb.SelectionFont = fontDialog.Font);
         }
+
         private void colorMenuItemClickHandler(object sender, EventArgs e)
         {
-            colorDialog.ShowDialog();
-            fileContentRichTextBox.SelectionColor = colorDialog.Color;
+            //colorDialog.ShowDialog();
+            fileContentRichTextBox.invokeEx(fcrtb => fcrtb.SelectionColor = colorDialog.Color);
         }
 
         private void handleException(string message, Exception ex)
@@ -112,10 +114,21 @@ namespace PrivilegedClient
             Console.WriteLine(ex.Message);
         }
 
+        private void handleExceptionInvoke(string message, Exception ex)
+        {
+            displayToTextBoxInvoke(message);
+            Console.WriteLine(ex.Message);
+        }
         private void displayToTextBox(string text)
         {
             if (text == string.Empty) { return; }
             statusTextBox.Text += CRLF + text;
+        }
+
+        private void displayToTextBoxInvoke(string text)
+        {
+            if (text == string.Empty) { return; }
+            statusTextBox.invokeEx(stb => stb.Text += CRLF + text);
         }
 
 

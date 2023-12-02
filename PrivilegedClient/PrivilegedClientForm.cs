@@ -1,4 +1,5 @@
-﻿using Client.Utils;
+﻿
+using PrivilegedClient.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -292,7 +293,7 @@ namespace PrivilegedClient
 
         private IPAddress getIPAddress(string ipAddress)
         {
-            IPAddress address = null;
+            IPAddress address = IPAddress.Parse(LOCALHOST);
             try
             {
                 if(ipAddress == string.Empty) {

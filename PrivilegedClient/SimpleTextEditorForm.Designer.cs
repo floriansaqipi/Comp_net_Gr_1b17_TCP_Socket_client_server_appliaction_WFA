@@ -28,29 +28,19 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SimpleTextEditorForm));
             colorDialog = new ColorDialog();
             saveFileButton = new Button();
             tableLayoutPanel2 = new TableLayoutPanel();
-            colorToolStripMenuItem = new ToolStripMenuItem();
-            fontToolStripMenuItem1 = new ToolStripMenuItem();
-            fontToolStripMenuItem = new ToolStripMenuItem();
-            selectAllToolStripMenuItem = new ToolStripMenuItem();
-            toolStripSeparator4 = new ToolStripSeparator();
             fontDialog = new FontDialog();
-            pasteToolStripMenuItem = new ToolStripMenuItem();
-            cutToolStripMenuItem = new ToolStripMenuItem();
-            toolStripSeparator3 = new ToolStripSeparator();
-            redoToolStripMenuItem = new ToolStripMenuItem();
-            undoToolStripMenuItem = new ToolStripMenuItem();
-            editToolStripMenuItem = new ToolStripMenuItem();
-            copyToolStripMenuItem = new ToolStripMenuItem();
-            menuStrip1 = new MenuStrip();
             tableLayoutPanel1 = new TableLayoutPanel();
+            menuStrip1 = new MenuStrip();
+            fontToolStripMenuItem = new ToolStripMenuItem();
+            fontToolStripMenuItem1 = new ToolStripMenuItem();
+            colorToolStripMenuItem = new ToolStripMenuItem();
             fileContentRichTextBox = new RichTextBox();
             tableLayoutPanel2.SuspendLayout();
-            menuStrip1.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
+            menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // saveFileButton
@@ -78,106 +68,6 @@
             tableLayoutPanel2.Size = new Size(794, 30);
             tableLayoutPanel2.TabIndex = 2;
             // 
-            // colorToolStripMenuItem
-            // 
-            colorToolStripMenuItem.Name = "colorToolStripMenuItem";
-            colorToolStripMenuItem.Size = new Size(103, 22);
-            colorToolStripMenuItem.Text = "Color";
-            colorToolStripMenuItem.Click += colorMenuItemClickHandler;
-            // 
-            // fontToolStripMenuItem1
-            // 
-            fontToolStripMenuItem1.Name = "fontToolStripMenuItem1";
-            fontToolStripMenuItem1.Size = new Size(103, 22);
-            fontToolStripMenuItem1.Text = "Font";
-            fontToolStripMenuItem1.Click += fontMenuItemClickHandler;
-            // 
-            // fontToolStripMenuItem
-            // 
-            fontToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { fontToolStripMenuItem1, colorToolStripMenuItem });
-            fontToolStripMenuItem.Name = "fontToolStripMenuItem";
-            fontToolStripMenuItem.Size = new Size(43, 20);
-            fontToolStripMenuItem.Text = "Font";
-            // 
-            // selectAllToolStripMenuItem
-            // 
-            selectAllToolStripMenuItem.Name = "selectAllToolStripMenuItem";
-            selectAllToolStripMenuItem.Size = new Size(144, 22);
-            selectAllToolStripMenuItem.Text = "Select &All";
-            selectAllToolStripMenuItem.Click += selectAllMenuItemClickHandler;
-            // 
-            // toolStripSeparator4
-            // 
-            toolStripSeparator4.Name = "toolStripSeparator4";
-            toolStripSeparator4.Size = new Size(141, 6);
-            // 
-            // pasteToolStripMenuItem
-            // 
-            pasteToolStripMenuItem.Image = (Image)resources.GetObject("pasteToolStripMenuItem.Image");
-            pasteToolStripMenuItem.ImageTransparentColor = Color.Magenta;
-            pasteToolStripMenuItem.Name = "pasteToolStripMenuItem";
-            pasteToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.V;
-            pasteToolStripMenuItem.Size = new Size(144, 22);
-            pasteToolStripMenuItem.Text = "&Paste";
-            pasteToolStripMenuItem.Click += pasteMenuItemClickHandler;
-            // 
-            // cutToolStripMenuItem
-            // 
-            cutToolStripMenuItem.Image = (Image)resources.GetObject("cutToolStripMenuItem.Image");
-            cutToolStripMenuItem.ImageTransparentColor = Color.Magenta;
-            cutToolStripMenuItem.Name = "cutToolStripMenuItem";
-            cutToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.X;
-            cutToolStripMenuItem.Size = new Size(144, 22);
-            cutToolStripMenuItem.Text = "Cu&t";
-            cutToolStripMenuItem.Click += cutMenuItemClickHandler;
-            // 
-            // toolStripSeparator3
-            // 
-            toolStripSeparator3.Name = "toolStripSeparator3";
-            toolStripSeparator3.Size = new Size(141, 6);
-            // 
-            // redoToolStripMenuItem
-            // 
-            redoToolStripMenuItem.Name = "redoToolStripMenuItem";
-            redoToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.Y;
-            redoToolStripMenuItem.Size = new Size(144, 22);
-            redoToolStripMenuItem.Text = "&Redo";
-            redoToolStripMenuItem.Click += redoMenuItemClickHandler;
-            // 
-            // undoToolStripMenuItem
-            // 
-            undoToolStripMenuItem.Name = "undoToolStripMenuItem";
-            undoToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.Z;
-            undoToolStripMenuItem.Size = new Size(144, 22);
-            undoToolStripMenuItem.Text = "&Undo";
-            undoToolStripMenuItem.Click += undoMenuItemClickHandler;
-            // 
-            // editToolStripMenuItem
-            // 
-            editToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { undoToolStripMenuItem, redoToolStripMenuItem, toolStripSeparator3, cutToolStripMenuItem, copyToolStripMenuItem, pasteToolStripMenuItem, toolStripSeparator4, selectAllToolStripMenuItem });
-            editToolStripMenuItem.Name = "editToolStripMenuItem";
-            editToolStripMenuItem.Size = new Size(39, 20);
-            editToolStripMenuItem.Text = "&Edit";
-            // 
-            // copyToolStripMenuItem
-            // 
-            copyToolStripMenuItem.Image = (Image)resources.GetObject("copyToolStripMenuItem.Image");
-            copyToolStripMenuItem.ImageTransparentColor = Color.Magenta;
-            copyToolStripMenuItem.Name = "copyToolStripMenuItem";
-            copyToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.C;
-            copyToolStripMenuItem.Size = new Size(144, 22);
-            copyToolStripMenuItem.Text = "&Copy";
-            copyToolStripMenuItem.Click += copyMenuItemClickHandler;
-            // 
-            // menuStrip1
-            // 
-            menuStrip1.Items.AddRange(new ToolStripItem[] { editToolStripMenuItem, fontToolStripMenuItem });
-            menuStrip1.Location = new Point(0, 0);
-            menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new Size(800, 24);
-            menuStrip1.TabIndex = 0;
-            menuStrip1.Text = "menuStrip1";
-            // 
             // tableLayoutPanel1
             // 
             tableLayoutPanel1.ColumnCount = 1;
@@ -194,6 +84,36 @@
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F));
             tableLayoutPanel1.Size = new Size(800, 450);
             tableLayoutPanel1.TabIndex = 1;
+            // 
+            // menuStrip1
+            // 
+            menuStrip1.Items.AddRange(new ToolStripItem[] { fontToolStripMenuItem });
+            menuStrip1.Location = new Point(0, 0);
+            menuStrip1.Name = "menuStrip1";
+            menuStrip1.Size = new Size(800, 24);
+            menuStrip1.TabIndex = 0;
+            menuStrip1.Text = "menuStrip1";
+            // 
+            // fontToolStripMenuItem
+            // 
+            fontToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { fontToolStripMenuItem1, colorToolStripMenuItem });
+            fontToolStripMenuItem.Name = "fontToolStripMenuItem";
+            fontToolStripMenuItem.Size = new Size(43, 20);
+            fontToolStripMenuItem.Text = "Font";
+            // 
+            // fontToolStripMenuItem1
+            // 
+            fontToolStripMenuItem1.Name = "fontToolStripMenuItem1";
+            fontToolStripMenuItem1.Size = new Size(180, 22);
+            fontToolStripMenuItem1.Text = "Font";
+            fontToolStripMenuItem1.Click += fontMenuItemClickHandler;
+            // 
+            // colorToolStripMenuItem
+            // 
+            colorToolStripMenuItem.Name = "colorToolStripMenuItem";
+            colorToolStripMenuItem.Size = new Size(180, 22);
+            colorToolStripMenuItem.Text = "Color";
+            colorToolStripMenuItem.Click += colorMenuItemClickHandler;
             // 
             // fileContentRichTextBox
             // 
@@ -214,10 +134,10 @@
             Text = "SimpleTextEditorForm";
             Load += onLoadForm;
             tableLayoutPanel2.ResumeLayout(false);
-            menuStrip1.ResumeLayout(false);
-            menuStrip1.PerformLayout();
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.PerformLayout();
+            menuStrip1.ResumeLayout(false);
+            menuStrip1.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -226,21 +146,12 @@
         private ColorDialog colorDialog;
         private Button saveFileButton;
         private TableLayoutPanel tableLayoutPanel2;
-        private ToolStripMenuItem colorToolStripMenuItem;
-        private ToolStripMenuItem fontToolStripMenuItem1;
-        private ToolStripMenuItem fontToolStripMenuItem;
-        private ToolStripMenuItem selectAllToolStripMenuItem;
-        private ToolStripSeparator toolStripSeparator4;
         private FontDialog fontDialog;
-        private ToolStripMenuItem pasteToolStripMenuItem;
-        private ToolStripMenuItem cutToolStripMenuItem;
-        private ToolStripSeparator toolStripSeparator3;
-        private ToolStripMenuItem redoToolStripMenuItem;
-        private ToolStripMenuItem undoToolStripMenuItem;
-        private ToolStripMenuItem editToolStripMenuItem;
-        private ToolStripMenuItem copyToolStripMenuItem;
-        private MenuStrip menuStrip1;
         private TableLayoutPanel tableLayoutPanel1;
         private RichTextBox fileContentRichTextBox;
+        private MenuStrip menuStrip1;
+        private ToolStripMenuItem fontToolStripMenuItem;
+        private ToolStripMenuItem fontToolStripMenuItem1;
+        private ToolStripMenuItem colorToolStripMenuItem;
     }
 }
