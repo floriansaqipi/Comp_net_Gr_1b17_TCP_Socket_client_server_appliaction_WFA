@@ -2,7 +2,10 @@
 
 ## Project Overview
 
-This project was developed as the second assignment for the Computer Networks course. The main objective was to implement a client-server application using C# and socket programming. The application is designed as a Windows Form App and fulfills specific requirements outlined below.
+This project was developed as the second assignment for the Computer Networks course. The main objective was to implement a client-server application using C# and socket programming. The application is designed as a Windows Form App.
+
+This project is designed to facilitate a multi-threaded server-client architecture using Net and Net.Sockets C# libraries. Our application allows clients to connect to the server, each receiving its dedicated thread. With different privilege levels, users can browse, read, create, edit and delete files on the server, as well as execute them as needed, using the designed GUI.
+The project fulfills specific requirements outlined below.
 
 ### Project Requirements
 
@@ -51,7 +54,12 @@ This project was developed as the second assignment for the Computer Networks co
 - [Fisnik Hazrolli](https://github.com/fisnikhz)
 - [Fjolla Ajeti](https://github.com/fjolla-ajeti)
 - [Florian Saqipi](https://github.com/floriansaqipi)
+  
+## Requirements
+To run this application, you'll need:
 
+-Visual Studio or any C# IDE that supports WinForms.
+-.NET Framework.
 
 ## Acknowledgments
 
